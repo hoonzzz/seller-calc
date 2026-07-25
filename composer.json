@@ -1,0 +1,43 @@
+{
+  "name": "prism/mvp",
+  "description": "A mobile-first opinion product centered on attributed changes of mind.",
+  "type": "project",
+  "license": "proprietary",
+  "require": {
+    "php": "^8.3",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "vlucas/phpdotenv": "^5.6.4"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1.14",
+    "phpunit/phpunit": "^12.5.30"
+  },
+  "autoload": {
+    "psr-4": {
+      "Prism\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Prism\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "lint": "php scripts/lint.php",
+    "analyse": "phpstan analyse --memory-limit=512M",
+    "test": "phpunit",
+    "check": [
+      "@lint",
+      "@analyse",
+      "@test"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "allow-plugins": {}
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

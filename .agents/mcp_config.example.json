@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "context7": {
+      "serverUrl": "https://mcp.context7.com/mcp/oauth",
+      "disabled": true
+    },
+    "github-readonly": {
+      "serverUrl": "https://api.githubcopilot.com/mcp/readonly",
+      "disabled": true
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--isolated"
+      ],
+      "disabled": true
+    }
+  }
+}
