@@ -23,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1497636547853445" crossOrigin="anonymous"></script>
+      </head>
       <body className={inter.className}>
         <div className="min-h-screen bg-background flex flex-col">
           <header className="bg-white border-b border-border sticky top-0 z-10 shadow-sm">
