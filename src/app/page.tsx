@@ -444,7 +444,7 @@ export default function Home() {
       </div>
 
       {/* SEO 최적화를 위한 하단 텍스트 가이드 */}
-      <div className="mt-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-border space-y-6">
+      <div id="guide" className="mt-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-border space-y-6">
         <h2 className="text-2xl font-bold text-gray-900 border-b pb-4">쇼핑몰 순수익 마진 계산기 이용 가이드</h2>
         
         <div className="space-y-4 text-gray-600 leading-relaxed text-sm md:text-base">
