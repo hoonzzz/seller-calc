@@ -15,7 +15,10 @@ export const metadata: Metadata = {
     description: "스마트스토어, 쿠팡 등 오픈마켓 판매자를 위한 정확한 순수익 및 마진율 계산기",
     type: "website",
     locale: "ko_KR",
-  }
+  },
+  other: {
+    "google-adsense-account": "ca-pub-1497636547853445",
+  },
 };
 
 export default function RootLayout({
