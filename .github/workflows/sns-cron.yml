@@ -1,0 +1,30 @@
+name: SNS Auto Poster (Threads)
+
+on:
+  schedule:
+    # 한국 시간(KST) 기준 하루 5회 실행
+    # UTC 기준: 23:00(08:00 KST), 03:00(12:00 KST), 07:00(16:00 KST), 11:00(20:00 KST), 14:00(23:00 KST)
+    - cron: '0 23,3,7,11,14 * * *'
+  workflow_dispatch: # 수동 실행 버튼 활성화
+
+jobs:
+  post-to-sns:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Node.js 세팅
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 의존성 패키지 설치
+        run: npm ci
+
+      - name: SNS 자동 포스팅 스크립트 실행
+        env:
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+        run: npm run post:sns

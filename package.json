@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "post:sns": "ts-node scripts/sns_auto_poster.ts"
   },
   "dependencies": {
     "lucide-react": "^0.378.0",
