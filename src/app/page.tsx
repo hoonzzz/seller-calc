@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Calculator, Store, DollarSign, PieChart, Info, RefreshCcw } from "lucide-react";
+import SearchBar from "@/components/SearchBar";
 
 import { calculateMargin, TaxType } from "@/lib/calculator";
 
@@ -36,6 +37,7 @@ export default function Home() {
   const [customFee, setCustomFee] = useState<number>(4.8);
   
   const [price, setPrice] = useState<number>(10000); // 판매가
+  const [productName, setProductName] = useState<string>(""); // 상품명
   const [shippingCustomer, setShippingCustomer] = useState<number>(3000); // 고객부담 배송비
   
   const [cost, setCost] = useState<number>(4000); // 매입원가
@@ -150,10 +152,24 @@ export default function Home() {
     setHistory(prev => prev.filter(item => item.id !== id));
   };
 
+  const handleSelectProduct = (name: string, selectedPrice: number) => {
+    setProductName(name);
+    setPrice(selectedPrice);
+  };
+
   if (!mounted) return <div className="animate-pulse h-screen bg-gray-100 rounded-xl" />;
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <SearchBar onSelectProduct={handleSelectProduct} />
+
+      {productName && (
+        <div className="bg-primary/5 border border-primary/20 text-primary p-3 rounded-lg text-sm font-medium flex items-center justify-between mb-2">
+          <span>선택된 상품: {productName}</span>
+          <button onClick={() => setProductName("")} className="text-gray-400 hover:text-red-500">✕</button>
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row gap-6">
         
         {/* 왼쪽: 입력 폼 */}
