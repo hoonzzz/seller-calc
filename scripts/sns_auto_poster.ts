@@ -1,4 +1,4 @@
-const SITE_URL = "https://seller-calc-sable.vercel.app/";
+const SITE_URL = "https://buly.kr/9tDR1u2";
 
 interface Product {
   name: string;
