@@ -377,7 +377,7 @@ export default function Home() {
               }}
               className="w-full bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold py-3.5 rounded-xl hover:opacity-90 transition-opacity shadow-md flex items-center justify-center gap-2 animate-pulse-slow"
             >
-              <span className="text-xl">🛒</span> 쿠팡에서 해당 상품 소싱하기 (원가 확인)
+              <span className="text-xl">🛒</span> 쿠팡에서 현재 시세 확인하기
             </button>
             
             <div className="mt-3 text-center">
