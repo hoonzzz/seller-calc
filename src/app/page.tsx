@@ -21,6 +21,50 @@ const MARKET_PRESETS: Preset[] = [
   { id: "custom", name: "직접입력", fee: 0 },
 ];
 
+function QuickAmountInput({ 
+  label, 
+  value, 
+  onChange, 
+  highlight = false,
+  showQuickButtons = true
+}: { 
+  label: string, 
+  value: number, 
+  onChange: (val: number) => void,
+  highlight?: boolean,
+  showQuickButtons?: boolean
+}) {
+  return (
+    <div className={`flex flex-col p-3 rounded-xl border ${highlight ? 'bg-green-50/30 border-green-100' : 'bg-gray-50/50 border-gray-100'}`}>
+      <div className="flex items-center justify-between">
+        <label className="text-sm font-bold text-gray-700">{label}</label>
+        <div className="relative">
+          <input
+            type="number"
+            value={value || ""}
+            onChange={(e) => onChange(Number(e.target.value))}
+            className={`w-40 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none transition-shadow ${highlight ? 'font-bold text-lg' : 'font-medium text-base'}`}
+          />
+          <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
+        </div>
+      </div>
+      {showQuickButtons && (
+        <div className="flex flex-wrap justify-end gap-1 mt-3">
+          {[100000, 50000, 10000, 5000, 1000, 100].map(amt => (
+            <button
+              key={amt}
+              onClick={() => onChange(Number(value || 0) + amt)}
+              className="px-2 py-1 bg-white hover:bg-[#03C75A]/10 text-gray-500 hover:text-[#03C75A] text-[10px] md:text-xs font-bold rounded shadow-[0_1px_2px_rgba(0,0,0,0.05)] border border-gray-200 transition-colors flex-1 min-w-[36px]"
+            >
+              +{amt >= 10000 ? `${amt/10000}만` : amt >= 1000 ? `${amt/1000}천` : amt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [market, setMarket] = useState<Market>("smartstore");
@@ -178,98 +222,28 @@ export default function Home() {
           </div>
 
           <div className="bg-white p-5 rounded-2xl shadow-sm border border-border space-y-4">
-            <h2 className="text-lg font-bold mb-2 flex items-center gap-2">
+            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-green-500" /> 
               매출 입력
             </h2>
             
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">판매가</label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={price || ""}
-                    onChange={(e) => setPrice(Number(e.target.value))}
-                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-semibold text-lg"
-                  />
-                  <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">고객부담 배송비</label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={shippingCustomer || ""}
-                    onChange={(e) => setShippingCustomer(Number(e.target.value))}
-                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
-                  />
-                  <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
-                </div>
-              </div>
+            <div className="space-y-4">
+              <QuickAmountInput label="판매가" value={price} onChange={setPrice} highlight={true} />
+              <QuickAmountInput label="고객부담 배송비" value={shippingCustomer} onChange={setShippingCustomer} />
             </div>
           </div>
 
           <div className="bg-white p-5 rounded-2xl shadow-sm border border-border space-y-4">
-            <h2 className="text-lg font-bold mb-2 flex items-center gap-2">
+            <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
               <PieChart className="w-5 h-5 text-orange-500" /> 
               비용 입력
             </h2>
             
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">매입 원가 (상품대)</label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={cost || ""}
-                    onChange={(e) => setCost(Number(e.target.value))}
-                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
-                  />
-                  <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">실제 택배비</label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={shippingReal || ""}
-                    onChange={(e) => setShippingReal(Number(e.target.value))}
-                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
-                  />
-                  <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">포장비 (부자재 등)</label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={packing || ""}
-                    onChange={(e) => setPacking(Number(e.target.value))}
-                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium text-sm"
-                  />
-                  <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">기타 비용 (광고비 등)</label>
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={other || ""}
-                    onChange={(e) => setOther(Number(e.target.value))}
-                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium text-sm"
-                  />
-                  <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
-                </div>
-              </div>
+            <div className="space-y-4">
+              <QuickAmountInput label="매입 원가 (상품대)" value={cost} onChange={setCost} />
+              <QuickAmountInput label="실제 택배비" value={shippingReal} onChange={setShippingReal} />
+              <QuickAmountInput label="포장비 (부자재 등)" value={packing} onChange={setPacking} showQuickButtons={false} />
+              <QuickAmountInput label="기타 비용 (광고비 등)" value={other} onChange={setOther} showQuickButtons={false} />
             </div>
           </div>
 
