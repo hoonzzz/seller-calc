@@ -48,13 +48,13 @@ export async function GET(request: Request) {
   }
 
   try {
-    const api_url = `https://openapi.naver.com/v1/search/shop.json?query=${encodeURIComponent(query)}&display=10`;
+    const api_url = `https://naverapihub.apigw.ntruss.com/search/v1/shop?query=${encodeURIComponent(query)}&display=10`;
     
     const response = await fetch(api_url, {
       method: "GET",
       headers: {
-        "X-Naver-Client-Id": clientId,
-        "X-Naver-Client-Secret": clientSecret,
+        "X-NCP-APIGW-API-KEY-ID": clientId,
+        "X-NCP-APIGW-API-KEY": clientSecret,
       },
     });
 
