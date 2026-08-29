@@ -405,10 +405,13 @@ export default function Home() {
             </div>
 
             <button 
-              onClick={saveToHistory}
-              className="w-full bg-gray-900 text-white font-medium py-3 rounded-xl hover:bg-gray-800 transition-colors shadow-md"
+              onClick={() => {
+                const searchKeyword = productName || "도매 특가";
+                window.open(`https://www.coupang.com/np/search?q=${encodeURIComponent(searchKeyword)}`, '_blank');
+              }}
+              className="w-full bg-[#03C75A] text-white font-bold py-3 rounded-xl hover:bg-[#03C75A]/90 transition-colors shadow-md flex items-center justify-center gap-2"
             >
-              현재 계산 결과 저장하기
+              <span className="text-xl">🛒</span> 해당 상품 소싱하기
             </button>
 
             {/* 막대형 비용 시각화 */}
