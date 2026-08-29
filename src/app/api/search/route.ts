@@ -106,7 +106,7 @@ export async function GET(request: Request) {
           let sum = 0;
           let count = 0;
           let min = Infinity;
-          shopResult.items.forEach((item: any) => {
+          shopResult.items.forEach((item: { lprice: string }) => {
             const price = parseInt(item.lprice, 10);
             if (price > 0) {
               sum += price;
