@@ -49,16 +49,37 @@ function QuickAmountInput({
         </div>
       </div>
       {showQuickButtons && (
-        <div className="flex flex-wrap justify-end gap-1 mt-3">
-          {[100000, 50000, 10000, 5000, 1000, 100].map(amt => (
+        <div className="flex flex-col gap-1 mt-3">
+          {/* 플러스 버튼 */}
+          <div className="flex w-full justify-between gap-1">
+            {[100000, 50000, 10000, 5000, 1000, 100].map(amt => (
+              <button
+                key={`plus-${amt}`}
+                onClick={() => onChange(Number(value || 0) + amt)}
+                className="py-1.5 bg-white hover:bg-blue-50 text-gray-600 hover:text-blue-600 text-[10px] md:text-xs font-bold rounded shadow-sm border border-gray-200 transition-colors flex-1"
+              >
+                +{amt >= 10000 ? `${amt/10000}만` : amt >= 1000 ? `${amt/1000}천` : amt}
+              </button>
+            ))}
+          </div>
+          {/* 마이너스 버튼 & 초기화 */}
+          <div className="flex w-full justify-between gap-1">
+            {[100000, 50000, 10000, 5000, 1000].map(amt => (
+              <button
+                key={`minus-${amt}`}
+                onClick={() => onChange(Math.max(0, Number(value || 0) - amt))}
+                className="py-1.5 bg-white hover:bg-red-50 text-gray-400 hover:text-red-500 text-[10px] md:text-xs font-bold rounded shadow-sm border border-gray-200 transition-colors flex-1"
+              >
+                -{amt >= 10000 ? `${amt/10000}만` : amt >= 1000 ? `${amt/1000}천` : amt}
+              </button>
+            ))}
             <button
-              key={amt}
-              onClick={() => onChange(Number(value || 0) + amt)}
-              className="px-2 py-1 bg-white hover:bg-[#03C75A]/10 text-gray-500 hover:text-[#03C75A] text-[10px] md:text-xs font-bold rounded shadow-[0_1px_2px_rgba(0,0,0,0.05)] border border-gray-200 transition-colors flex-1 min-w-[36px]"
+              onClick={() => onChange(0)}
+              className="py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-[10px] md:text-xs font-extrabold rounded shadow-sm border border-gray-200 transition-colors flex-1"
             >
-              +{amt >= 10000 ? `${amt/10000}만` : amt >= 1000 ? `${amt/1000}천` : amt}
+              초기화
             </button>
-          ))}
+          </div>
         </div>
       )}
     </div>
