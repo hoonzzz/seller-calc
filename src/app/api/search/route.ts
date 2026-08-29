@@ -84,12 +84,21 @@ export async function GET(request: Request) {
       }));
     }
 
-    return NextResponse.json({
-      keyword: query,
-      startDate,
-      endDate,
-      data: trendData
-    });
+    // ★ 핵심 캐싱 로직: 응답에 Cache-Control 헤더 추가 (24시간 캐시)
+    return NextResponse.json(
+      {
+        keyword: query,
+        startDate,
+        endDate,
+        data: trendData
+      },
+      {
+        headers: {
+          // s-maxage=86400 : Vercel CDN 엣지 서버에 24시간(86400초) 동안 데이터를 묶어둠
+          "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=43200"
+        }
+      }
+    );
   } catch (error) {
     console.error("Naver Datalab API Error:", error);
     return NextResponse.json({ error: "Failed to fetch trend data" }, { status: 500 });
