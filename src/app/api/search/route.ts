@@ -78,7 +78,7 @@ export async function GET(request: Request) {
     // 네이버 데이터랩 응답 파싱
     let trendData = [];
     if (result.results && result.results.length > 0) {
-      trendData = result.results[0].data.map((item: any) => ({
+      trendData = result.results[0].data.map((item: { period: string; ratio: number }) => ({
         period: item.period,
         ratio: item.ratio
       }));

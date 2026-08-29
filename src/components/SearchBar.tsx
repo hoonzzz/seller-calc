@@ -94,7 +94,7 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
             <div>
               <h3 className="text-lg font-bold text-gray-900">
-                <span className="text-primary">'{query}'</span> 최근 30일 검색 트렌드
+                <span className="text-primary">&apos;{query}&apos;</span> 최근 30일 검색 트렌드
               </h3>
               <p className="text-xs text-gray-500 mt-1">네이버 데이터랩(검색어 트렌드) 기준 상대적 수치</p>
             </div>
