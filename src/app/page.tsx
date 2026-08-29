@@ -13,16 +13,6 @@ interface Preset {
   name: string;
   fee: number;
 }
-
-interface HistoryItem {
-  id: string;
-  date: string;
-  price: number;
-  marketName: string;
-  netProfit: number;
-  marginRate: number;
-}
-
 const MARKET_PRESETS: Preset[] = [
   { id: "smartstore", name: "스마트스토어", fee: 4.8 }, // 평균 4~5%
   { id: "coupang", name: "쿠팡", fee: 10.8 },
@@ -48,12 +38,9 @@ export default function Home() {
   const [taxType, setTaxType] = useState<TaxType>("general");
   const [incomeTaxRate, setIncomeTaxRate] = useState<number>(0); // 소득세율
 
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-
   // 로컬스토리지에서 불러오기
   useEffect(() => {
     const saved = localStorage.getItem("sellerCalcData");
-    const savedHistory = localStorage.getItem("sellerCalcHistory");
     if (saved) {
       try {
         const data = JSON.parse(saved);
@@ -71,13 +58,6 @@ export default function Home() {
         console.error("Failed to parse saved data", e);
       }
     }
-    if (savedHistory) {
-      try {
-        setHistory(JSON.parse(savedHistory));
-      } catch (e) {
-        console.error("Failed to parse history", e);
-      }
-    }
     setMounted(true);
   }, []);
 
@@ -89,12 +69,6 @@ export default function Home() {
       }));
     }
   }, [market, customFee, price, shippingCustomer, cost, shippingReal, packing, other, taxType, incomeTaxRate, mounted]);
-
-  useEffect(() => {
-    if (mounted) {
-      localStorage.setItem("sellerCalcHistory", JSON.stringify(history));
-    }
-  }, [history, mounted]);
 
   // 계산 로직
   const feeRate = market === "custom" ? customFee : (MARKET_PRESETS.find(p => p.id === market)?.fee || 0);
@@ -134,22 +108,6 @@ export default function Home() {
       setTaxType("general");
       setIncomeTaxRate(0);
     }
-  };
-
-  const saveToHistory = () => {
-    const newItem: HistoryItem = {
-      id: Date.now().toString(),
-      date: new Date().toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
-      price,
-      marketName: MARKET_PRESETS.find(p => p.id === market)?.name || '커스텀',
-      netProfit,
-      marginRate
-    };
-    setHistory(prev => [newItem, ...prev].slice(0, 10)); // 최대 10개 저장
-  };
-
-  const removeHistory = (id: string) => {
-    setHistory(prev => prev.filter(item => item.id !== id));
   };
 
   const handleSelectProduct = (name: string, selectedPrice: number) => {
@@ -439,27 +397,6 @@ export default function Home() {
 
           </div>
 
-          {/* 저장된 기록 패널 */}
-          {history.length > 0 && (
-            <div className="bg-white rounded-2xl shadow-sm border border-border p-5">
-              <h3 className="font-bold text-sm text-gray-700 mb-3">최근 계산 기록</h3>
-              <div className="space-y-2">
-                {history.map(item => (
-                  <div key={item.id} className="flex justify-between items-center text-sm p-3 bg-gray-50 rounded-lg border border-gray-100">
-                    <div>
-                      <div className="font-semibold">{item.price.toLocaleString()}원 <span className="text-xs text-gray-400 font-normal ml-1">({item.marketName})</span></div>
-                      <div className="text-xs text-gray-500">{item.date}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-primary">{item.netProfit.toLocaleString()}원</div>
-                      <div className="text-xs text-gray-500">마진 {item.marginRate.toFixed(1)}%</div>
-                    </div>
-                    <button onClick={() => removeHistory(item.id)} className="text-gray-400 hover:text-red-500 text-lg ml-2">×</button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
       </div>
