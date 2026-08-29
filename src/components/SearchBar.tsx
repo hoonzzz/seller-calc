@@ -182,7 +182,7 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
         </div>
       ) : (
         !isSearching && (
-          <div className="bg-white border-2 border-gray-100 border-dashed rounded-xl p-4 md:p-5 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+          <div className="bg-white border-2 border-gray-100 border-dashed rounded-xl p-4 md:p-5 transition-all cursor-default">
             <div className="flex items-center gap-2 mb-4">
               <span className="bg-[#03C75A] text-white text-[10px] font-bold px-2 py-0.5 rounded">예시</span>
               <h3 className="text-sm font-bold text-gray-600">이런 식으로 트렌드를 분석해 드려요!</h3>
