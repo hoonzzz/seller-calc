@@ -11,61 +11,87 @@ export async function GET(request: Request) {
   const clientId = process.env.NAVER_CLIENT_ID;
   const clientSecret = process.env.NAVER_CLIENT_SECRET;
 
-  // API 키가 없으면 프론트엔드 테스트용으로 가짜(Dummy) 데이터를 내려줍니다.
+  // 30일 전 날짜 계산
+  const endDateObj = new Date();
+  const startDateObj = new Date();
+  startDateObj.setDate(startDateObj.getDate() - 30);
+
+  const endDate = endDateObj.toISOString().split("T")[0];
+  const startDate = startDateObj.toISOString().split("T")[0];
+
+  // API 키가 없으면 프론트엔드 테스트용으로 가짜(Dummy) 트렌드 데이터를 내려줍니다.
   if (!clientId || !clientSecret) {
-    console.log("⚠️ 네이버 API 키가 없습니다. 더미 데이터를 반환합니다.");
+    console.log("⚠️ 네이버 API 키가 없습니다. 더미 트렌드 데이터를 반환합니다.");
+    
+    // 가상의 30일 데이터 생성 (랜덤 패턴)
+    const dummyData = Array.from({ length: 30 }).map((_, i) => {
+      const d = new Date(startDateObj);
+      d.setDate(d.getDate() + i);
+      // 우상향하는 패턴에 약간의 노이즈 추가
+      const baseRatio = (i / 30) * 80;
+      const noise = Math.random() * 20;
+      return {
+        period: d.toISOString().split("T")[0],
+        ratio: Math.min(100, Math.max(0, baseRatio + noise))
+      };
+    });
+
     return NextResponse.json({
-      items: [
-        {
-          title: `<b>${query}</b> (인기상품)`,
-          link: "https://shopping.naver.com",
-          image: "https://via.placeholder.com/150?text=Product",
-          lprice: "24900",
-          hprice: "",
-          mallName: "스마트스토어",
-          productId: "dummy-1"
-        },
-        {
-          title: `[로켓] <b>${query}</b> 가성비 끝판왕`,
-          link: "https://shopping.naver.com",
-          image: "https://via.placeholder.com/150?text=Product",
-          lprice: "18900",
-          hprice: "",
-          mallName: "쿠팡",
-          productId: "dummy-2"
-        },
-        {
-          title: `도매 <b>${query}</b> 대량구매`,
-          link: "https://shopping.naver.com",
-          image: "https://via.placeholder.com/150?text=Product",
-          lprice: "12500",
-          hprice: "",
-          mallName: "도매꾹",
-          productId: "dummy-3"
-        }
-      ]
+      keyword: query,
+      startDate,
+      endDate,
+      data: dummyData
     });
   }
 
   try {
-    const api_url = `https://naverapihub.apigw.ntruss.com/search/v1/shop?query=${encodeURIComponent(query)}&display=10`;
+    const api_url = "https://naverapihub.apigw.ntruss.com/datalab/v1/search";
     
+    const requestBody = {
+      startDate: startDate,
+      endDate: endDate,
+      timeUnit: "date",
+      keywordGroups: [
+        {
+          groupName: query,
+          keywords: [query]
+        }
+      ]
+    };
+
     const response = await fetch(api_url, {
-      method: "GET",
+      method: "POST",
       headers: {
         "X-NCP-APIGW-API-KEY-ID": clientId,
         "X-NCP-APIGW-API-KEY": clientSecret,
+        "Content-Type": "application/json"
       },
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
       throw new Error(`Naver API responded with status: ${response.status}`);
     }
 
-    const data = await response.json();
-    return NextResponse.json(data);
+    const result = await response.json();
+    
+    // 네이버 데이터랩 응답 파싱
+    let trendData = [];
+    if (result.results && result.results.length > 0) {
+      trendData = result.results[0].data.map((item: any) => ({
+        period: item.period,
+        ratio: item.ratio
+      }));
+    }
+
+    return NextResponse.json({
+      keyword: query,
+      startDate,
+      endDate,
+      data: trendData
+    });
   } catch (error) {
-    console.error("Naver Search API Error:", error);
-    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
+    console.error("Naver Datalab API Error:", error);
+    return NextResponse.json({ error: "Failed to fetch trend data" }, { status: 500 });
   }
 }

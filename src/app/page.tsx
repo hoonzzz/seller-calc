@@ -154,7 +154,9 @@ export default function Home() {
 
   const handleSelectProduct = (name: string, selectedPrice: number) => {
     setProductName(name);
-    setPrice(selectedPrice);
+    if (selectedPrice > 0) {
+      setPrice(selectedPrice);
+    }
   };
 
   if (!mounted) return <div className="animate-pulse h-screen bg-gray-100 rounded-xl" />;

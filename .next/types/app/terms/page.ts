@@ -1,4 +1,4 @@
-// File: C:\Users\user\.gemini\antigravity\worktrees\project1\autonomous_venture_studio_init\apps\seller-calc\src\app\terms\page.tsx
+// File: C:\Users\user\.gemini\antigravity\worktrees\project1\autonomous_venture_studio_init\src\app\terms\page.tsx
 import * as entry from '../../../../src/app/terms/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
