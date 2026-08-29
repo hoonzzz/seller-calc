@@ -191,7 +191,7 @@ export default function Home() {
                     type="number"
                     value={price || ""}
                     onChange={(e) => setPrice(Number(e.target.value))}
-                    className="w-32 text-right p-2 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-semibold text-lg"
+                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-semibold text-lg"
                   />
                   <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
                 </div>
@@ -204,7 +204,7 @@ export default function Home() {
                     type="number"
                     value={shippingCustomer || ""}
                     onChange={(e) => setShippingCustomer(Number(e.target.value))}
-                    className="w-32 text-right p-2 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
+                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
                   />
                   <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
                 </div>
@@ -226,7 +226,7 @@ export default function Home() {
                     type="number"
                     value={cost || ""}
                     onChange={(e) => setCost(Number(e.target.value))}
-                    className="w-32 text-right p-2 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
+                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
                   />
                   <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
                 </div>
@@ -239,7 +239,7 @@ export default function Home() {
                     type="number"
                     value={shippingReal || ""}
                     onChange={(e) => setShippingReal(Number(e.target.value))}
-                    className="w-32 text-right p-2 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
+                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium"
                   />
                   <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
                 </div>
@@ -252,7 +252,7 @@ export default function Home() {
                     type="number"
                     value={packing || ""}
                     onChange={(e) => setPacking(Number(e.target.value))}
-                    className="w-32 text-right p-2 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium text-sm"
+                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium text-sm"
                   />
                   <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
                 </div>
@@ -265,7 +265,7 @@ export default function Home() {
                     type="number"
                     value={other || ""}
                     onChange={(e) => setOther(Number(e.target.value))}
-                    className="w-32 text-right p-2 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium text-sm"
+                    className="w-32 text-right py-2 pl-2 pr-8 rounded-lg border border-border focus:ring-2 focus:ring-primary outline-none font-medium text-sm"
                   />
                   <span className="absolute right-3 top-2.5 text-sm text-gray-500 pointer-events-none">원</span>
                 </div>
