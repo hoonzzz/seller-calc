@@ -113,20 +113,38 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
             </div>
 
             {trendData.length > 0 ? (
-              <div className="h-32 md:h-36 flex items-end gap-1 w-full pt-4 border-b-2 border-gray-100">
-                {trendData.map((item, i) => (
-                  <div key={i} className="flex-1 flex flex-col justify-end group relative h-full">
-                    {/* Tooltip */}
-                    <div className="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] md:text-[11px] font-medium py-1.5 px-2.5 rounded pointer-events-none z-10 whitespace-nowrap transition-opacity">
-                      {item.period.substring(5)} 지수: <span className="font-bold text-[#03C75A]">{Math.round(item.ratio)}</span>
+              <div className="relative h-40 w-full pt-6 pb-2 border-b-2 border-gray-100 mt-4">
+                {/* 평균선 (Dotted Line) */}
+                <div 
+                  className="absolute left-0 right-0 border-t border-dashed border-gray-300 pointer-events-none flex items-center justify-end pr-1"
+                  style={{ bottom: `${Math.max(10, trendData.reduce((acc, cur) => acc + cur.ratio, 0) / trendData.length)}%` }}
+                >
+                  <span className="text-[9px] text-gray-400 bg-white px-1 -translate-y-1/2">평균선</span>
+                </div>
+
+                <div className="flex items-end gap-1 w-full h-full relative z-10">
+                  {trendData.map((item, i) => (
+                    <div key={i} className="flex-1 flex flex-col justify-end group relative h-full">
+                      {/* Tooltip */}
+                      <div className="opacity-0 group-hover:opacity-100 absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] md:text-[11px] font-bold py-1.5 px-2.5 rounded pointer-events-none z-20 whitespace-nowrap transition-opacity shadow-lg">
+                        {item.period.substring(5)} 지수: <span className="text-[#03C75A]">{Math.round(item.ratio)}</span>
+                      </div>
+                      {/* Bar */}
+                      <div 
+                        className={`w-full transition-colors rounded-t-sm ${i === trendData.length - 1 ? 'bg-[#03C75A]' : 'bg-[#03C75A]/20 group-hover:bg-[#03C75A]/60'}`}
+                        style={{ height: `${Math.max(2, item.ratio)}%` }}
+                      ></div>
                     </div>
-                    {/* Bar */}
-                    <div 
-                      className="w-full bg-[#03C75A]/20 group-hover:bg-[#03C75A] transition-colors rounded-t-sm"
-                      style={{ height: `${Math.max(2, item.ratio)}%` }}
-                    ></div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                {/* X축 날짜 정보 */}
+                <div className="absolute -bottom-5 left-0 text-[9px] text-gray-400 font-medium">
+                  {trendData[0].period.substring(5)}
+                </div>
+                <div className="absolute -bottom-5 right-0 text-[9px] text-[#03C75A] font-bold">
+                  {trendData[trendData.length - 1].period.substring(5)} (오늘)
+                </div>
               </div>
             ) : (
               <div className="py-8 text-center text-gray-500 text-xs md:text-sm font-medium">
@@ -134,7 +152,7 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
               </div>
             )}
             
-            <div className="mt-3 text-[10px] md:text-[11px] text-gray-400 text-right font-medium">
+            <div className="mt-8 text-[10px] md:text-[11px] text-gray-400 text-right font-medium">
               ※ 막대에 마우스를 올리면 상세 수치를 확인 가능 (상품명 자동 입력 완료!)
             </div>
           </div>
