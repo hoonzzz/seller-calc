@@ -1,24 +1,21 @@
-# React / Next.js Study Project
+# React Calculator
 
-This is a simple personal study project to practice React hooks (`useState`, `useEffect`) and Next.js App Router.
+A simple calculator built with React and Next.js.
 
-## 📝 Description
+## Getting Started
 
-- A basic state management practice using a calculator layout.
-- Fetching practice with simple dummy API endpoints.
-- UI styling practice using Tailwind CSS.
-
-## 🛠️ Tech Stack
-
-- Next.js 14
-- React
-- Tailwind CSS
-
-## 💻 Local Run
+First, run the development server:
 
 ```bash
-npm install
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-> **Note**: This is just a personal sandbox for learning purposes. No production features are included.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
