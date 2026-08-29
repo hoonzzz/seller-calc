@@ -73,7 +73,7 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="검색어 트렌드 분석 (예: 탁상용 선풍기)"
+            placeholder="상품을 검색하여 검색 트렌드를 확인하세요."
             className="w-full pl-10 pr-4 py-3.5 rounded-xl border-2 border-[#03C75A]/20 bg-white shadow-sm focus:outline-none focus:ring-0 focus:border-[#03C75A] text-sm transition-all placeholder:text-gray-400 font-medium"
           />
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -90,7 +90,7 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
       </form>
 
       {/* 검색 결과 영역 */}
-      {hasSearched && (
+      {hasSearched ? (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
           {/* 네이버 트렌드 결과 박스 */}
           <div className="bg-white border-2 border-[#03C75A]/10 rounded-xl p-4 md:p-5 shadow-sm">
@@ -159,6 +159,28 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
             </p>
           </div>
         </div>
+      ) : (
+        !isSearching && (
+          <div className="bg-white border-2 border-gray-100 border-dashed rounded-xl p-4 md:p-5 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-default">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="bg-[#03C75A] text-white text-[10px] font-bold px-2 py-0.5 rounded">예시</span>
+              <h3 className="text-sm font-bold text-gray-600">이런 식으로 트렌드를 분석해 드려요!</h3>
+            </div>
+            <div className="h-20 flex items-end gap-1 w-full border-b-2 border-gray-100 pointer-events-none">
+              {[12, 15, 14, 18, 16, 20, 19, 22, 25, 23, 28, 30, 35, 32, 40, 45, 42, 50, 55, 60, 58, 65, 70, 75, 80, 85, 90, 88, 95, 100].map((ratio, i) => (
+                <div key={i} className="flex-1 flex flex-col justify-end h-full">
+                  <div className="w-full bg-[#03C75A]/30 rounded-t-sm" style={{ height: `${ratio}%` }}></div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 flex justify-between items-center">
+              <div className="text-[11px] text-gray-400 font-medium">검색어 ➔ 원가입력 ➔ 마진율 자동계산</div>
+              <div className="flex items-center gap-1 text-[11px] font-bold text-red-500">
+                <TrendingUp className="w-3 h-3" /> 상승세 (수요 증가)
+              </div>
+            </div>
+          </div>
+        )
       )}
     </div>
   );
