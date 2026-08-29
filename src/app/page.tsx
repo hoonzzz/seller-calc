@@ -475,7 +475,7 @@ export default function Home() {
           ></iframe>
         </div>
         <p className="text-[10px] text-gray-400 mt-4 text-center w-full">
-          "이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."
+          &quot;이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.&quot;
         </p>
       </div>
 

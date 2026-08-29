@@ -94,7 +94,7 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-lg font-extrabold text-gray-900">
-                  <span className="text-[#03C75A]">'{query}'</span> 최근 30일 검색 트렌드
+                  <span className="text-[#03C75A]">&apos;{query}&apos;</span> 최근 30일 검색 트렌드
                 </h3>
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#03C75A]/10 text-[#03C75A] px-2 py-0.5 rounded-sm">
                   <Info className="w-3 h-3" /> 데이터 출처: NAVER 데이터랩
