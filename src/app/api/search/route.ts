@@ -45,7 +45,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const api_url = "https://naverapihub.apigw.ntruss.com/datalab/v1/search";
+    const api_url = "https://naverapihub.apigw.ntruss.com/search-trend/v1/search";
     
     const requestBody = {
       startDate: startDate,
