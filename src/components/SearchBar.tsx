@@ -113,29 +113,50 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
             </div>
 
             {trendData.length > 0 ? (
-              <div className="relative h-40 w-full pt-6 pb-2 border-b-2 border-gray-100 mt-4">
+              <div className="relative h-44 w-full pt-8 pb-2 border-b-2 border-gray-100 mt-4">
                 {/* 평균선 (Dotted Line) */}
                 <div 
-                  className="absolute left-0 right-0 border-t border-dashed border-gray-300 pointer-events-none flex items-center justify-end pr-1"
-                  style={{ bottom: `${Math.max(10, trendData.reduce((acc, cur) => acc + cur.ratio, 0) / trendData.length)}%` }}
+                  className="absolute left-0 right-0 border-t border-dashed border-gray-300 pointer-events-none flex items-center justify-end pr-1 z-0"
+                  style={{ bottom: `${Math.max(5, trendData.reduce((acc, cur) => acc + cur.ratio, 0) / trendData.length)}%` }}
                 >
-                  <span className="text-[9px] text-gray-400 bg-white px-1 -translate-y-1/2">평균선</span>
+                  <span className="text-[9px] font-bold text-gray-400 bg-white px-1 -translate-y-1/2">
+                    평균 {Math.round(trendData.reduce((acc, cur) => acc + cur.ratio, 0) / trendData.length)}
+                  </span>
                 </div>
 
                 <div className="flex items-end gap-1 w-full h-full relative z-10">
-                  {trendData.map((item, i) => (
-                    <div key={i} className="flex-1 flex flex-col justify-end group relative h-full">
-                      {/* Tooltip */}
-                      <div className="opacity-0 group-hover:opacity-100 absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] md:text-[11px] font-bold py-1.5 px-2.5 rounded pointer-events-none z-20 whitespace-nowrap transition-opacity shadow-lg">
-                        {item.period.substring(5)} 지수: <span className="text-[#03C75A]">{Math.round(item.ratio)}</span>
+                  {trendData.map((item, i) => {
+                    const maxItem = trendData.reduce((prev, curr) => prev.ratio > curr.ratio ? prev : curr);
+                    const minItem = trendData.reduce((prev, curr) => prev.ratio < curr.ratio ? prev : curr);
+                    const isMax = item === maxItem;
+                    const isMin = item === minItem && !isMax;
+
+                    return (
+                      <div key={i} className="flex-1 flex flex-col justify-end group relative h-full">
+                        {/* Tooltip */}
+                        <div className="opacity-0 group-hover:opacity-100 absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] md:text-[11px] font-bold py-1.5 px-2.5 rounded pointer-events-none z-30 whitespace-nowrap transition-opacity shadow-lg">
+                          {item.period.substring(5)} 지수: <span className="text-[#03C75A]">{Math.round(item.ratio)}</span>
+                        </div>
+
+                        {/* Max / Min Label */}
+                        {(isMax || isMin) && (
+                          <div 
+                            className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap z-20 pointer-events-none text-center pb-1 ${isMax ? 'text-red-500' : 'text-blue-500'}`}
+                            style={{ bottom: `${Math.max(2, item.ratio)}%` }}
+                          >
+                            <div className="text-[9px] font-bold leading-tight bg-white/80 px-1 rounded">{isMax ? '최고' : '최저'} {Math.round(item.ratio)}</div>
+                            <div className="text-[7px] text-gray-500 font-medium leading-none bg-white/80 px-1 rounded mt-0.5">{item.period.substring(5)}</div>
+                          </div>
+                        )}
+
+                        {/* Bar */}
+                        <div 
+                          className={`w-full transition-colors rounded-t-sm ${i === trendData.length - 1 ? 'bg-[#03C75A]' : 'bg-[#03C75A]/20 group-hover:bg-[#03C75A]/60'}`}
+                          style={{ height: `${Math.max(2, item.ratio)}%` }}
+                        ></div>
                       </div>
-                      {/* Bar */}
-                      <div 
-                        className={`w-full transition-colors rounded-t-sm ${i === trendData.length - 1 ? 'bg-[#03C75A]' : 'bg-[#03C75A]/20 group-hover:bg-[#03C75A]/60'}`}
-                        style={{ height: `${Math.max(2, item.ratio)}%` }}
-                      ></div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {/* X축 날짜 정보 */}
