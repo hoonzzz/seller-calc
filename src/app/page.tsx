@@ -364,12 +364,20 @@ export default function Home() {
 
             <button 
               onClick={() => {
-                const searchKeyword = productName || "도매 특가";
-                window.open(`https://www.coupang.com/np/search?q=${encodeURIComponent(searchKeyword)}`, '_blank');
+                if (productName) {
+                  navigator.clipboard.writeText(productName).then(() => {
+                    alert(`✔️ 검색어 [ ${productName} ] 복사 완료!\n\n새 창이 열리면 쿠팡 검색창에 '붙여넣기' 하세요!`);
+                    window.open('https://link.coupang.com/a/gBfL9ZBm7o', '_blank');
+                  }).catch(() => {
+                    window.open('https://link.coupang.com/a/gBfL9ZBm7o', '_blank');
+                  });
+                } else {
+                  window.open('https://link.coupang.com/a/gBfL9ZBm7o', '_blank');
+                }
               }}
-              className="w-full bg-[#03C75A] text-white font-bold py-3 rounded-xl hover:bg-[#03C75A]/90 transition-colors shadow-md flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold py-3.5 rounded-xl hover:opacity-90 transition-opacity shadow-md flex items-center justify-center gap-2 animate-pulse-slow"
             >
-              <span className="text-xl">🛒</span> 해당 상품 소싱하기
+              <span className="text-xl">🛒</span> 해당 상품 소싱하기 (원가 확인)
             </button>
 
             {/* 막대형 비용 시각화 */}

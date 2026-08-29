@@ -158,11 +158,14 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
           </div>
 
           {/* 쿠팡 파트너스 검색 위젯 (트렌드 바로 아래로 이동) */}
-          <div className="bg-white p-4 md:p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center relative overflow-hidden">
-            <h3 className="text-xs md:text-sm font-bold text-gray-700 mb-3 w-full text-left flex items-center gap-1.5">
-              <span className="text-xl">🛒</span> 쿠팡 최저가/원가 바로 확인하기
+          <div className="bg-gradient-to-br from-red-50 to-orange-50 p-4 md:p-5 rounded-xl shadow-md border-2 border-red-200 flex flex-col items-center relative overflow-hidden ring-4 ring-red-50">
+            <div className="absolute top-0 right-0 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-bl-lg">
+              필수 확인!
+            </div>
+            <h3 className="text-xs md:text-sm font-extrabold text-red-700 mb-3 w-full text-left flex items-center gap-1.5">
+              <span className="text-xl">🛒</span> 소싱하기 전 원가/최저가 확인은 필수!
             </h3>
-            <div className="w-full max-w-2xl overflow-hidden rounded-lg">
+            <div className="w-full max-w-2xl overflow-hidden rounded-lg bg-white p-1 border border-red-100 shadow-inner">
               <iframe 
                 src="https://coupa.ng/co527n" 
                 width="100%" 
