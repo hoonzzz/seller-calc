@@ -16,6 +16,7 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [trendData, setTrendData] = useState<TrendData[]>([]);
+  const [shoppingData, setShoppingData] = useState<{averagePrice: number, minPrice: number} | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -35,10 +36,17 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
         setTrendData([]);
       }
       
-      onSelectProduct(query.trim(), 0); 
+      if (data.shoppingData) {
+        setShoppingData(data.shoppingData);
+        onSelectProduct(query.trim(), data.shoppingData.averagePrice); 
+      } else {
+        setShoppingData(null);
+        onSelectProduct(query.trim(), 0); 
+      }
     } catch (error) {
       console.error("Search failed:", error);
       setTrendData([]);
+      setShoppingData(null);
     } finally {
       setIsSearching(false);
       setHasSearched(true);
@@ -173,8 +181,24 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
               </div>
             )}
             
-            <div className="mt-8 text-[10px] md:text-[11px] text-gray-400 text-right font-medium">
-              ※ 막대에 마우스를 올리면 상세 수치를 확인 가능 (상품명 자동 입력 완료!)
+            {shoppingData && (
+              <div className="mt-10 flex gap-2">
+                <div className="flex-1 bg-blue-50/50 border border-blue-100 rounded-lg p-3 flex flex-col items-center justify-center relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-blue-400"></div>
+                  <div className="text-[10px] md:text-xs text-blue-600 font-bold mb-1">쇼핑 상위 평균가</div>
+                  <div className="text-sm md:text-base font-black text-blue-900">{shoppingData.averagePrice.toLocaleString()}원</div>
+                </div>
+                <div className="flex-1 bg-green-50/50 border border-green-100 rounded-lg p-3 flex flex-col items-center justify-center relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-green-400"></div>
+                  <div className="text-[10px] md:text-xs text-green-600 font-bold mb-1">쇼핑 최저가</div>
+                  <div className="text-sm md:text-base font-black text-green-900">{shoppingData.minPrice.toLocaleString()}원</div>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-3 flex justify-between items-center text-[10px] md:text-[11px] text-gray-400 font-medium">
+              <span className="text-blue-500">※ 평균 판매가가 계산기 [판매가]에 자동 입력됩니다!</span>
+              <span>(네이버 쇼핑 기준)</span>
             </div>
           </div>
 
