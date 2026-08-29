@@ -461,24 +461,6 @@ export default function Home() {
 
       </div>
 
-      {/* 쿠팡 파트너스 검색 위젯 */}
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-border mt-8 flex flex-col items-center">
-        <h3 className="text-sm font-bold text-gray-700 mb-4 w-full text-left">🛒 쿠팡에서 동일 상품 시세/원가 확인하기</h3>
-        <div className="w-full max-w-2xl overflow-hidden rounded-lg">
-          <iframe 
-            src="https://coupa.ng/co527n" 
-            width="100%" 
-            height="75" 
-            frameBorder="0" 
-            scrolling="no" 
-            referrerPolicy="unsafe-url"
-          ></iframe>
-        </div>
-        <p className="text-[10px] text-gray-400 mt-4 text-center w-full">
-          &quot;이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.&quot;
-        </p>
-      </div>
-
       {/* SEO 최적화를 위한 하단 텍스트 가이드 */}
       <div id="guide" className="mt-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-border space-y-6">
         <h2 className="text-2xl font-bold text-gray-900 border-b pb-4">쇼핑몰 순수익 마진 계산기 이용 가이드</h2>

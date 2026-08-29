@@ -67,73 +67,96 @@ export default function SearchBar({ onSelectProduct }: SearchBarProps) {
 
   return (
     <div className="w-full mb-6 space-y-4">
-      <form onSubmit={handleSearch} className="relative z-10">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="네이버 데이터랩 실시간 검색어 트렌드 분석 (예: 탁상용 선풍기)"
-          className="w-full pl-10 pr-24 py-3.5 rounded-xl border-2 border-[#03C75A]/20 bg-white shadow-sm focus:outline-none focus:ring-0 focus:border-[#03C75A] text-sm transition-all placeholder:text-gray-400 font-medium"
-        />
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-[#03C75A]" />
+      <form onSubmit={handleSearch} className="relative z-10 flex gap-2">
+        <div className="relative flex-1">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="검색어 트렌드 분석 (예: 탁상용 선풍기)"
+            className="w-full pl-10 pr-4 py-3.5 rounded-xl border-2 border-[#03C75A]/20 bg-white shadow-sm focus:outline-none focus:ring-0 focus:border-[#03C75A] text-sm transition-all placeholder:text-gray-400 font-medium"
+          />
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-[#03C75A]" />
+          </div>
         </div>
         <button
           type="submit"
           disabled={isSearching}
-          className="absolute inset-y-0 right-1.5 top-1.5 bottom-1.5 px-5 bg-[#03C75A] text-white text-sm font-bold rounded-lg hover:bg-[#03C75A]/90 transition-colors disabled:opacity-50"
+          className="shrink-0 px-4 md:px-5 bg-[#03C75A] text-white text-sm font-bold rounded-xl hover:bg-[#03C75A]/90 transition-colors disabled:opacity-50 flex items-center justify-center min-w-[80px]"
         >
-          {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : "트렌드 검색"}
+          {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : "검색"}
         </button>
       </form>
 
       {/* 검색 결과 영역 */}
       {hasSearched && (
-        <div className="bg-white border-2 border-[#03C75A]/10 rounded-xl p-5 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-lg font-extrabold text-gray-900">
-                  <span className="text-[#03C75A]">&apos;{query}&apos;</span> 최근 30일 검색 트렌드
+        <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          {/* 네이버 트렌드 결과 박스 */}
+          <div className="bg-white border-2 border-[#03C75A]/10 rounded-xl p-4 md:p-5 shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-5">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                <h3 className="text-base md:text-lg font-extrabold text-gray-900 break-keep">
+                  <span className="text-[#03C75A]">&apos;{query}&apos;</span> 최근 30일 트렌드
                 </h3>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#03C75A]/10 text-[#03C75A] px-2 py-0.5 rounded-sm">
-                  <Info className="w-3 h-3" /> 데이터 출처: NAVER 데이터랩
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-[#03C75A]/10 text-[#03C75A] px-2 py-0.5 rounded-sm whitespace-nowrap">
+                  <Info className="w-3 h-3" /> NAVER 데이터랩
                 </span>
               </div>
+              
+              {trendData.length > 0 && (
+                <div className={`self-start md:self-auto flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100 font-bold text-xs md:text-sm ${trendStatus.color}`}>
+                  {trendStatus.icon}
+                  {trendStatus.text}
+                </div>
+              )}
             </div>
-            
-            {trendData.length > 0 && (
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100 font-bold text-sm ${trendStatus.color}`}>
-                {trendStatus.icon}
-                {trendStatus.text}
+
+            {trendData.length > 0 ? (
+              <div className="h-32 md:h-36 flex items-end gap-1 w-full pt-4 border-b-2 border-gray-100">
+                {trendData.map((item, i) => (
+                  <div key={i} className="flex-1 flex flex-col justify-end group relative h-full">
+                    {/* Tooltip */}
+                    <div className="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] md:text-[11px] font-medium py-1.5 px-2.5 rounded pointer-events-none z-10 whitespace-nowrap transition-opacity">
+                      {item.period.substring(5)} 지수: <span className="font-bold text-[#03C75A]">{Math.round(item.ratio)}</span>
+                    </div>
+                    {/* Bar */}
+                    <div 
+                      className="w-full bg-[#03C75A]/20 group-hover:bg-[#03C75A] transition-colors rounded-t-sm"
+                      style={{ height: `${Math.max(2, item.ratio)}%` }}
+                    ></div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-8 text-center text-gray-500 text-xs md:text-sm font-medium">
+                해당 키워드의 네이버 검색 트렌드 데이터가 충분하지 않습니다.
               </div>
             )}
+            
+            <div className="mt-3 text-[10px] md:text-[11px] text-gray-400 text-right font-medium">
+              ※ 막대에 마우스를 올리면 상세 수치를 확인 가능 (상품명 자동 입력 완료!)
+            </div>
           </div>
 
-          {trendData.length > 0 ? (
-            <div className="h-36 flex items-end gap-1 w-full pt-4 border-b-2 border-gray-100">
-              {trendData.map((item, i) => (
-                <div key={i} className="flex-1 flex flex-col justify-end group relative h-full">
-                  {/* Tooltip */}
-                  <div className="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] font-medium py-1.5 px-2.5 rounded pointer-events-none z-10 whitespace-nowrap transition-opacity">
-                    {item.period.substring(5)} 네이버 검색 지수: <span className="font-bold text-[#03C75A]">{Math.round(item.ratio)}</span>
-                  </div>
-                  {/* Bar */}
-                  <div 
-                    className="w-full bg-[#03C75A]/20 group-hover:bg-[#03C75A] transition-colors rounded-t-sm"
-                    style={{ height: `${Math.max(2, item.ratio)}%` }}
-                  ></div>
-                </div>
-              ))}
+          {/* 쿠팡 파트너스 검색 위젯 (트렌드 바로 아래로 이동) */}
+          <div className="bg-white p-4 md:p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center relative overflow-hidden">
+            <h3 className="text-xs md:text-sm font-bold text-gray-700 mb-3 w-full text-left flex items-center gap-1.5">
+              <span className="text-xl">🛒</span> 쿠팡 최저가/원가 바로 확인하기
+            </h3>
+            <div className="w-full max-w-2xl overflow-hidden rounded-lg">
+              <iframe 
+                src="https://coupa.ng/co527n" 
+                width="100%" 
+                height="75" 
+                frameBorder="0" 
+                scrolling="no" 
+                referrerPolicy="unsafe-url"
+              ></iframe>
             </div>
-          ) : (
-            <div className="py-10 text-center text-gray-500 text-sm font-medium">
-              해당 키워드의 네이버 검색 트렌드 데이터가 충분하지 않습니다.
-            </div>
-          )}
-          
-          <div className="mt-3 text-[11px] text-gray-400 text-right font-medium">
-            ※ 그래프의 막대에 마우스를 올리면 날짜별 네이버 검색 지수 상세 수치를 확인할 수 있습니다.
+            <p className="text-[9px] md:text-[10px] text-gray-400 mt-3 text-center w-full">
+              &quot;이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.&quot;
+            </p>
           </div>
         </div>
       )}
