@@ -2,8 +2,8 @@ name: SNS Auto Poster (Threads)
 
 on:
   schedule:
-    # 매시간 정각에 실행 (하루 24회)
-    - cron: '0 * * * *'
+    # 매 10분마다 실행 (하루 144회) - 초기 트래픽 펌핑용
+    - cron: '*/10 * * * *'
   workflow_dispatch: # 수동 실행 버튼 활성화
 
 jobs:
