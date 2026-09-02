@@ -24,7 +24,8 @@ async function generatePost() {
 1. 주제: '초보 셀러의 마진 계산', '키워드 소싱', '세금 절세', '마케팅 기법', '해외대량등록' 중 무작위로 하나 선택 (매번 다른 각도로 작성)
 2. 포맷: 반드시 아래와 같은 Markdown 형식이어야 함 (맨 위에 Frontmatter 필수 포함)
 3. 제목과 내용은 실전적이고 아주 구체적인 팁을 담을 것
-4. 띄어쓰기와 맞춤법을 정확히 할 것
+4. excerpt(요약문)에는 절대 ** 등 마크다운 특수문자를 쓰지 말고 순수 텍스트만 쓸 것
+5. 띄어쓰기와 맞춤법을 정확히 할 것
 
 [형식]
 ---
@@ -46,7 +47,13 @@ excerpt: "목록에 보여질 요약 설명 (1-2줄)"
           contents: prompt,
         });
         
-        const text = response.text;
+        let text = response.text;
+        
+        // AI가 마크다운 코드블록(```markdown ... ```)으로 감싸서 대답할 경우를 대비해 껍데기 제거
+        text = text.replace(/^```(markdown)?\n/i, '').replace(/\n```$/i, '');
+        
+        // AI 작성 명시 문구 하단에 강제 추가
+        text += '\n\n---\n> *💡 이 글은 최신 쇼핑몰 트렌드 데이터를 기반으로 AI에 의해 자동 작성되었습니다.*';
         
         // 정규식으로 title 추출해서 파일명 생성
         const titleMatch = text.match(/title:\s*"([^"]+)"/);
