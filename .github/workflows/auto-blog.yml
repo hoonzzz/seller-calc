@@ -2,8 +2,8 @@ name: Auto Blog Poster
 
 on:
   schedule:
-    # 한국 시간 기준 매일 오전 9시 (UTC 00:00)
-    - cron: '0 0 * * *'
+    # 2시간마다 실행 (하루 12번 * 3개 = 36개 포스팅)
+    - cron: '0 */2 * * *'
   workflow_dispatch: # 수동 실행 버튼
 
 jobs:
