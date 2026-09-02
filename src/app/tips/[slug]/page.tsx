@@ -37,12 +37,25 @@ export default function Post({ params }: { params: { slug: string } }) {
       
       <article className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-10">
         <header className="mb-10 border-b border-gray-100 pb-8 text-center">
-          <p className="text-sm font-semibold text-[#03C75A] tracking-wide uppercase mb-2">
-            {postData.date}
-          </p>
-          <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-[#03C75A] border border-emerald-200">
+              {postData.date}
+            </span>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1">
+              🤖 AI 활용 콘텐츠
+            </span>
+          </div>
+          <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
             {postData.title}
           </h1>
+
+          {/* AI 투명성 가이드라인 준수 안내 박스 */}
+          <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-3.5 text-xs md:text-sm text-amber-900 text-left flex items-start gap-2.5 leading-relaxed">
+            <span className="text-base leading-none mt-0.5">ℹ️</span>
+            <div>
+              <strong className="font-semibold">생성형 AI 작성 콘텐츠 안내:</strong> 본 게시글은 최신 이커머스 트렌드 및 판매자 데이터를 바탕으로 생성형 AI를 활용하여 정보 제공 목적으로 작성되었습니다. 마켓별 정책 및 세법 변경에 따라 최신 정보와 차이가 있을 수 있으므로 실제 거래 및 세무 신고 시 반드시 공식 공지를 재확인하시기 바랍니다.
+            </div>
+          </div>
         </header>
         
         <div className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-[#03C75A] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
