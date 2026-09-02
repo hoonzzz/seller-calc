@@ -1,0 +1,38 @@
+name: Auto Blog Poster
+
+on:
+  schedule:
+    # 한국 시간 기준 매일 오전 9시 (UTC 00:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 수동 실행 버튼
+
+jobs:
+  generate-and-post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Post using AI
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/generate-post.js
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/tips/
+          # 변경사항이 있을 때만 커밋
+          git diff --staged --quiet || (git commit -m "docs: 🤖 AI 자동 블로그 포스팅" && git push)

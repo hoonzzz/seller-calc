@@ -410,28 +410,45 @@ export default function Home() {
 
       </div>
 
-      {/* SEO 최적화를 위한 하단 텍스트 가이드 */}
-      <div id="guide" className="mt-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-border space-y-6">
-        <h2 className="text-2xl font-bold text-gray-900 border-b pb-4">쇼핑몰 순수익 마진 계산기 이용 가이드</h2>
+      {/* SEO 최적화를 위한 하단 텍스트 가이드 & FAQ */}
+      <div id="guide" className="mt-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-border space-y-8">
+        <div className="text-center pb-6 border-b border-gray-100">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">쇼핑몰 마진율 계산기 및 마켓별 수수료 가이드</h2>
+          <p className="text-gray-500">스마트스토어, 쿠팡, 11번가 등 오픈마켓 판매자를 위한 완벽한 순수익 분석 솔루션</p>
+        </div>
         
-        <div className="space-y-4 text-gray-600 leading-relaxed text-sm md:text-base">
+        <div className="space-y-6 text-gray-700 leading-relaxed text-sm md:text-base">
           <section>
-            <h3 className="font-semibold text-lg text-gray-800 mb-2">왜 정확한 마진 계산이 중요한가요?</h3>
-            <p>스마트스토어, 쿠팡, 11번가 등 오픈마켓에 상품을 올리기 전 가장 먼저 해야 할 일은 바로 정확한 마진율 파악입니다. 겉보기에는 남는 장사 같아도 막상 결제 수수료, 연동 수수료, 배송비, 그리고 종합소득세 및 부가가치세까지 납부하고 나면 오히려 적자가 나는 경우(역마진)가 빈번하게 발생합니다.</p>
+            <h3 className="font-bold text-xl text-[#03C75A] mb-3">왜 정확한 마진 계산이 중요한가요?</h3>
+            <p className="mb-2">스마트스토어, 쿠팡, 11번가 등 오픈마켓에 상품을 올리기 전 가장 먼저 해야 할 일은 바로 정확한 마진율 파악입니다. 겉보기에는 남는 장사 같아도 막상 결제 수수료, 연동 수수료, 배송비, 그리고 종합소득세 및 부가가치세까지 납부하고 나면 오히려 적자가 나는 경우(역마진)가 빈번하게 발생합니다.</p>
+            <p>따라서, 본 계산기를 통해 원가, 택배비, 포장 부자재 비용을 모두 기입하고 보수적으로 순수익을 세팅하는 습관을 들이는 것이 성공적인 셀러가 되는 지름길입니다.</p>
           </section>
 
           <section>
-            <h3 className="font-semibold text-lg text-gray-800 mb-2">셀러마진 계산기의 특징</h3>
-            <ul className="list-disc pl-5 space-y-1">
-              <li><strong>마켓별 수수료 자동 반영</strong>: 스마트스토어, 쿠팡 등 주요 마켓의 평균 수수료율이 프리셋으로 제공됩니다.</li>
-              <li><strong>세금 공제 로직</strong>: 일반/간이/면세 사업자에 따른 부가세 차이와 종합소득세를 한 번에 계산할 수 있습니다.</li>
-              <li><strong>시각화 데이터</strong>: 매출 중 세금, 수수료, 비용이 차지하는 비중을 막대 그래프로 쉽게 이해할 수 있습니다.</li>
+            <h3 className="font-bold text-xl text-[#03C75A] mb-3">셀러마진 계산기의 주요 기능</h3>
+            <ul className="list-disc pl-5 space-y-2 bg-gray-50 p-4 rounded-xl">
+              <li><strong>마켓별 수수료 실시간 반영</strong>: 스마트스토어(약 6%), 쿠팡(약 11%), 11번가 등 주요 마켓의 평균 수수료율이 버튼 하나로 자동 반영됩니다.</li>
+              <li><strong>세금 공제 로직 탑재</strong>: 일반과세자, 간이과세자, 면세사업자에 따른 부가가치세(VAT) 차이와 연말 종합소득세 예상치를 미리 차감해 실제 통장에 꽂히는 진짜 마진을 보여줍니다.</li>
+              <li><strong>무료 키워드 트렌드 분석</strong>: 상단 검색창에 소싱할 상품명을 입력하면, 최근 30일간의 네이버 검색 트렌드 지수를 보여주어 수요 증감을 파악할 수 있습니다.</li>
             </ul>
           </section>
 
-          <section>
-            <h3 className="font-semibold text-lg text-gray-800 mb-2">마진율과 투자수익률(ROI)의 차이</h3>
-            <p>마진율은 <strong>총 매출액 대비 순수익의 비율</strong>을 뜻하며, ROI(Return On Investment)는 <strong>내가 투자한 비용(원가+택배비 등) 대비 얻은 순수익의 비율</strong>을 말합니다. 자본금이 적은 초보 셀러일수록 마진율뿐만 아니라 ROI가 높은 상품을 소싱하는 것이 유리합니다.</p>
+          <section className="pt-6 border-t border-gray-100">
+            <h3 className="font-bold text-xl text-gray-900 mb-4">자주 묻는 질문 (FAQ)</h3>
+            <div className="space-y-4">
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <h4 className="font-bold text-gray-800 mb-2">Q. 마진율과 투자수익률(ROI)은 무엇이 다른가요?</h4>
+                <p className="text-gray-600">마진율은 <strong>총 매출액 대비 순수익의 비율</strong>을 뜻하며, ROI(Return On Investment)는 <strong>내가 투자한 총비용(매입 원가+택배비 등) 대비 얻은 순수익의 비율</strong>을 말합니다. 자본금이 적은 초보 셀러일수록 단순히 마진율만 보지 말고, 적은 돈을 투자해 큰 돈을 벌어들이는 ROI가 높은 상품을 소싱하는 것이 유리합니다.</p>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <h4 className="font-bold text-gray-800 mb-2">Q. 쿠팡 수수료는 왜 카테고리마다 다른가요?</h4>
+                <p className="text-gray-600">쿠팡은 전자제품, 패션, 식품 등 카테고리별로 최저 5%에서 최고 11% 이상의 각기 다른 판매 수수료를 적용하고 있습니다. 본 계산기에서는 가장 보수적인 접근을 위해 평균적으로 11%의 수수료율을 기본 프리셋으로 제공하고 있으며, 필요시 사용자가 직접 수정할 수 있습니다.</p>
+              </div>
+              <div className="bg-white border border-gray-200 rounded-lg p-4">
+                <h4 className="font-bold text-gray-800 mb-2">Q. 간이과세자인데 부가세를 빼고 계산해야 하나요?</h4>
+                <p className="text-gray-600">간이과세자의 경우 일반과세자(10%)에 비해 부가가치세 부담(약 1.5% 수준)이 매우 적습니다. 하지만 매출 규모가 커지면 언제든 일반과세자로 전환될 수 있으므로, 처음부터 10%의 부가세를 제외하고 마진을 계산하는 보수적인 습관을 들이는 것이 좋습니다.</p>
+              </div>
+            </div>
           </section>
         </div>
       </div>
