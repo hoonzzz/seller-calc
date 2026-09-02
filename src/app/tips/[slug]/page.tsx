@@ -42,24 +42,26 @@ export default function Post({ params }: { params: { slug: string } }) {
               {postData.date}
             </span>
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 flex items-center gap-1">
-              🤖 AI 활용 콘텐츠
+              🤖 AI
             </span>
           </div>
-          <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-6">
+          <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
             {postData.title}
           </h1>
+        </header>
+        
+        <div className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-[#03C75A] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
+          <ReactMarkdown>{postData.content || ''}</ReactMarkdown>
+        </div>
 
-          {/* AI 투명성 가이드라인 준수 안내 박스 */}
-          <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-3.5 text-xs md:text-sm text-amber-900 text-left flex items-start gap-2.5 leading-relaxed">
+        {/* AI 투명성 가이드라인 준수 공식 배너 (최하단) */}
+        <div className="mt-12 pt-8 border-t border-gray-100">
+          <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-4 text-xs md:text-sm text-amber-900 flex items-start gap-2.5 leading-relaxed">
             <span className="text-base leading-none mt-0.5">ℹ️</span>
             <div>
               <strong className="font-semibold">생성형 AI 작성 콘텐츠 안내:</strong> 본 게시글은 최신 이커머스 트렌드 및 판매자 데이터를 바탕으로 생성형 AI를 활용하여 정보 제공 목적으로 작성되었습니다. 마켓별 정책 및 세법 변경에 따라 최신 정보와 차이가 있을 수 있으므로 실제 거래 및 세무 신고 시 반드시 공식 공지를 재확인하시기 바랍니다.
             </div>
           </div>
-        </header>
-        
-        <div className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-[#03C75A] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
-          <ReactMarkdown>{postData.content || ''}</ReactMarkdown>
         </div>
       </article>
 

@@ -1,10 +1,10 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/api/search/route": "app/api/search/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js",
-  "/tips/[slug]/page": "app/tips/[slug]/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/search/route": "app/api/search/route.js",
   "/tips/page": "app/tips/page.js",
   "/terms/page": "app/terms/page.js",
-  "/privacy/page": "app/privacy/page.js"
+  "/privacy/page": "app/privacy/page.js",
+  "/tips/[slug]/page": "app/tips/[slug]/page.js"
 }
