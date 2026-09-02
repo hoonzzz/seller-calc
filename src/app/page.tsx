@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Calculator, Store, DollarSign, PieChart, Info, RefreshCcw } from "lucide-react";
+import Link from "next/link";
+import { Calculator, Store, DollarSign, PieChart, Info, RefreshCcw, Sparkles, ChevronRight } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 
 import { calculateMargin, TaxType } from "@/lib/calculator";
@@ -187,6 +188,24 @@ export default function Home() {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <SearchBar onSelectProduct={handleSelectProduct} />
+
+      {/* 셀러 꿀팁 상단 띠배너 */}
+      <Link 
+        href="/tips" 
+        className="group flex items-center justify-between p-3 sm:p-3.5 bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 border border-emerald-200/70 rounded-xl hover:border-[#03C75A] transition-all shadow-xs hover:shadow-sm"
+      >
+        <div className="flex items-center gap-2.5 overflow-hidden">
+          <span className="flex-shrink-0 bg-[#03C75A] text-white text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs">
+            <Sparkles className="w-3 h-3" /> 필독 꿀팁
+          </span>
+          <span className="text-xs sm:text-sm font-semibold text-gray-800 truncate group-hover:text-[#03C75A] transition-colors">
+            팔수록 적자? 초보 셀러가 꼭 알아야 할 숨은 비용 &amp; 절세 비법 💡
+          </span>
+        </div>
+        <span className="flex-shrink-0 text-xs font-bold text-[#03C75A] flex items-center group-hover:translate-x-0.5 transition-transform ml-2">
+          보러가기 <ChevronRight className="w-3.5 h-3.5" />
+        </span>
+      </Link>
 
       {productName && (
         <div className="bg-primary/5 border border-primary/20 text-primary p-3 rounded-lg text-sm font-medium flex items-center justify-between mb-2">
@@ -410,8 +429,33 @@ export default function Home() {
 
       </div>
 
+      {/* 셀러 꿀팁 메인 후킹 CTA 카드 */}
+      <div className="mt-8 bg-gradient-to-br from-gray-900 via-gray-900 to-slate-800 rounded-2xl p-6 md:p-8 text-white shadow-md relative overflow-hidden">
+        <div className="absolute top-0 right-0 -mt-6 -mr-6 w-40 h-40 bg-[#03C75A]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-1 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#03C75A]/20 text-[#03C75A] text-xs font-bold border border-[#03C75A]/30">
+              <Sparkles className="w-3.5 h-3.5" /> 실전 셀러 노하우 무료 공개
+            </div>
+            <h3 className="text-xl md:text-2xl font-extrabold tracking-tight">
+              마진율 5% 더 올리는 소싱 &amp; 절세 시크릿
+            </h3>
+            <p className="text-gray-300 text-xs md:text-sm leading-relaxed max-w-xl">
+              스마트스토어 vs 쿠팡 수수료 비교부터 간이과세자 부가세 환급 타이밍, 황금 키워드 소싱 3단계 공식까지 현직 셀러들의 실전 팁을 지금 확인해보세요.
+            </p>
+          </div>
+          <Link
+            href="/tips"
+            className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm bg-[#03C75A] hover:bg-[#03C75A]/90 text-white shadow-lg hover:shadow-emerald-500/20 transition-all hover:scale-102"
+          >
+            셀러 꿀팁 보러가기
+            <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+
       {/* SEO 최적화를 위한 하단 텍스트 가이드 & FAQ */}
-      <div id="guide" className="mt-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-border space-y-8">
+      <div id="guide" className="mt-10 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-border space-y-8">
         <div className="text-center pb-6 border-b border-gray-100">
           <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-3">쇼핑몰 마진율 계산기 및 마켓별 수수료 가이드</h2>
           <p className="text-gray-500">스마트스토어, 쿠팡, 11번가 등 오픈마켓 판매자를 위한 완벽한 순수익 분석 솔루션</p>

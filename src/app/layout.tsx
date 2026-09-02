@@ -41,7 +41,7 @@ export default function RootLayout({
               </Link>
               <nav className="text-sm text-muted-foreground flex gap-5 font-medium">
                 <Link href="/" className="hover:text-primary transition-colors">계산기</Link>
-                <Link href="/tips" className="hover:text-primary transition-colors text-[#03C75A] font-bold">셀러꿀팁(New)</Link>
+                <Link href="/tips" className="hover:text-primary transition-colors font-semibold">셀러꿀팁</Link>
                 <a href="/#guide" className="hover:text-primary transition-colors">이용안내</a>
               </nav>
             </div>
