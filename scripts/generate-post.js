@@ -31,7 +31,7 @@ excerpt: "목록에 보여질 요약 설명 (1-2줄)"
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.6-flash',
       contents: prompt,
     });
     
