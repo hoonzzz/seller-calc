@@ -29,37 +29,49 @@ excerpt: "목록에 보여질 요약 설명 (1-2줄)"
 본문 내용...
 `;
 
-  try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
-      contents: prompt,
-    });
-    
-    const text = response.text;
-    
-    // YYYY-MM-DD 추출 혹은 생성
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];
-    
-    // 정규식으로 title 추출해서 파일명 생성
-    const titleMatch = text.match(/title:\s*"([^"]+)"/);
-    let filename = `post-${Date.now()}.md`;
-    if (titleMatch && titleMatch[1]) {
-      // 영문, 숫자, 한글만 남기고 공백은 하이픈으로 변경
-      const slug = titleMatch[1]
-        .replace(/[^a-zA-Z0-9가-힣\s]/g, '')
-        .trim()
-        .replace(/\s+/g, '-');
-      filename = `${slug}.md`;
-    }
+  let success = false;
+  let retries = 3;
+  
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.6-flash',
+        contents: prompt,
+      });
+      
+      const text = response.text;
+      
+      // YYYY-MM-DD 추출 혹은 생성
+      const today = new Date();
+      
+      // 정규식으로 title 추출해서 파일명 생성
+      const titleMatch = text.match(/title:\s*"([^"]+)"/);
+      let filename = `post-${Date.now()}.md`;
+      if (titleMatch && titleMatch[1]) {
+        // 영문, 숫자, 한글만 남기고 공백은 하이픈으로 변경
+        const slug = titleMatch[1]
+          .replace(/[^a-zA-Z0-9가-힣\s]/g, '')
+          .trim()
+          .replace(/\s+/g, '-');
+        filename = `${slug}.md`;
+      }
 
-    const filepath = path.join(__dirname, '../src/content/tips', filename);
-    fs.writeFileSync(filepath, text, 'utf8');
-    
-    console.log(`Successfully generated post: ${filename}`);
-  } catch (error) {
-    console.error("Failed to generate post:", error);
-    process.exit(1);
+      const filepath = path.join(__dirname, '../src/content/tips', filename);
+      fs.writeFileSync(filepath, text, 'utf8');
+      
+      console.log(`Successfully generated post: ${filename}`);
+      success = true;
+      break; // 성공하면 루프 탈출
+    } catch (error) {
+      console.error(`Attempt ${i + 1} failed:`, error.message);
+      if (i < retries - 1) {
+        console.log("Retrying in 5 seconds...");
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      } else {
+        console.error("All retries failed. Exiting.");
+        process.exit(1);
+      }
+    }
   }
 }
 
