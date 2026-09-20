@@ -10,8 +10,8 @@ async function generatePost() {
     process.exit(1);
   }
 
-  // 한 번 배포(Build)할 때 3개의 글을 한꺼번에 생성하여 배포 비효율 극복
-  const POSTS_PER_RUN = 3;
+  // 애드센스 심사 통과를 위해 1회 실행당 1개의 정예 글만 정성껏 생성
+  const POSTS_PER_RUN = 1;
   let successCount = 0;
 
   for (let p = 0; p < POSTS_PER_RUN; p++) {
