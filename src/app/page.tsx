@@ -377,21 +377,33 @@ export default function Home() {
             </div>
 
             <button 
-              onClick={() => {
-                if (productName) {
-                  navigator.clipboard.writeText(productName).then(() => {
-                    alert(`✔️ 검색어 [ ${productName} ] 복사 완료!\n\n새 창이 열리면 쿠팡 검색창에 '붙여넣기' 하세요!`);
-                    window.open('https://link.coupang.com/a/gBfL9ZBm7o', '_blank');
-                  }).catch(() => {
-                    window.open('https://link.coupang.com/a/gBfL9ZBm7o', '_blank');
-                  });
-                } else {
-                  window.open('https://link.coupang.com/a/gBfL9ZBm7o', '_blank');
+              onClick={async () => {
+                // 브라우저 팝업 차단 방지를 위해 새 창을 먼저 열어둡니다.
+                const newWindow = window.open('about:blank', '_blank');
+
+                try {
+                  if (productName && productName.trim()) {
+                    const res = await fetch(`/api/coupang?keyword=${encodeURIComponent(productName.trim())}`);
+                    if (res.ok) {
+                      const data = await res.json();
+                      if (data.url && newWindow) {
+                        newWindow.location.href = data.url;
+                        return;
+                      }
+                    }
+                  }
+                } catch (err) {
+                  console.error('쿠팡 파트너스 딥링크 연동 실패:', err);
+                }
+
+                // 키 미등록, 에러 또는 상품명 부재 시 기본 링크로 이동
+                if (newWindow) {
+                  newWindow.location.href = 'https://link.coupang.com/a/gBfL9ZBm7o';
                 }
               }}
-              className="w-full bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold py-3.5 rounded-xl hover:opacity-90 transition-opacity shadow-md flex items-center justify-center gap-2 animate-pulse-slow"
+              className="w-full bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold py-3.5 rounded-xl hover:opacity-90 transition-opacity shadow-md flex items-center justify-center gap-2 animate-pulse-slow cursor-pointer"
             >
-              <span className="text-xl">🛒</span> 쿠팡에서 현재 시세 확인하기
+              <span className="text-xl">🛒</span> {productName ? `'${productName}' 쿠팡 최저가 시세 확인` : '쿠팡에서 현재 시세 확인하기'}
             </button>
             
             <div className="mt-3 text-center">
