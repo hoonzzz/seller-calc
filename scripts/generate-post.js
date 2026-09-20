@@ -52,11 +52,18 @@ excerpt: "목록에 보여질 요약 설명 2~3줄 (마크다운 기호 없이 �
           contents: prompt,
         });
         
-        let text = response.text;
-        
         // AI가 마크다운 코드블록(```markdown ... ```)으로 감싸서 대답할 경우를 대비해 껍데기 제거
-        text = text.replace(/^```(markdown)?\n/i, '').replace(/\n```$/i, '');
-        
+        text = text.replace(/^```(markdown)?\r?\n/i, '').replace(/\r?\n```$/i, '').trim();
+
+        // 프론트매터(---) 내부 들여쓰기 및 공백 완벽 정제 (YAMLException 원천 차단)
+        text = text.replace(/^---\r?\n([\s\S]*?)\r?\n---/, (match, frontmatter) => {
+          const cleanedLines = frontmatter
+            .split('\n')
+            .map((line) => line.trim())
+            .filter((line) => Boolean(line));
+          return `---\n${cleanedLines.join('\n')}\n---`;
+        });
+
         // AI 작성 명시 문구 하단에 강제 추가
         text += '\n\n---\n> **📢 안내:** 본 정보성 콘텐츠는 구글 및 국내 생성형 AI 콘텐츠 표기 가이드라인에 따라, 최신 이커머스 트렌드 및 판매자 데이터를 바탕으로 생성형 AI를 활용하여 작성되었습니다.';
         

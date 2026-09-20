@@ -5,6 +5,10 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.next/
+out/
+build/
+dist/
 /vendor/
 /node_modules/
 /.phpunit.cache/
