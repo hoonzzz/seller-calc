@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ko_KR",
   },
+  verification: {
+    google: "YIgzzgdbDVTgVugxff41w4EWm3rwrIZYLEVRMomxGaY",
+  },
   other: {
     "google-adsense-account": "ca-pub-1497636547853445",
   },
