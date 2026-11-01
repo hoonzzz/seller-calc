@@ -42,11 +42,11 @@ export default function RootLayout({
                 <div className="bg-primary text-white rounded-md w-8 h-8 flex items-center justify-center text-sm font-black shadow-sm">SM</div>
                 <span className="tracking-tight">셀러마진</span>
               </Link>
-              <nav className="text-sm text-muted-foreground flex gap-4 sm:gap-5 font-medium">
+              <nav className="text-xs sm:text-sm text-muted-foreground flex gap-3 sm:gap-5 font-medium">
                 <Link href="/" className="hover:text-primary transition-colors">계산기</Link>
+                <Link href="/supplies" className="hover:text-primary transition-colors font-semibold">부자재·규격</Link>
                 <Link href="/tips" className="hover:text-primary transition-colors font-semibold">셀러꿀팁</Link>
-                <Link href="/about" className="hover:text-primary transition-colors">서비스 소개</Link>
-                <a href="/#guide" className="hover:text-primary transition-colors">이용안내</a>
+                <Link href="/about" className="hover:text-primary transition-colors">소개</Link>
               </nav>
             </div>
           </header>

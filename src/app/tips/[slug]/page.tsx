@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import TipToolkitWidget from '@/components/TipToolkitWidget';
 
 export async function generateStaticParams() {
   const posts = getSortedPostsData();
@@ -64,6 +65,9 @@ export default function Post({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </article>
+
+      {/* 칼럼 주제와 매칭되는 실무 장비·부자재 시세 조회 위젯 */}
+      <TipToolkitWidget slug={params.slug} />
 
       {/* 내부 링크 미끼용 계산기 유도 박스 */}
       <div className="mt-12 bg-blue-50 rounded-2xl p-6 text-center border border-blue-100">

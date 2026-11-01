@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Calculator, Store, DollarSign, PieChart, Info, RefreshCcw, Sparkles, ChevronRight } from "lucide-react";
+import { Calculator, Store, DollarSign, PieChart, Info, RefreshCcw, Sparkles, ChevronRight, Share2, Check } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
+import ProfitBoostWidgets from "@/components/ProfitBoostWidgets";
 
 import { calculateMargin, TaxType } from "@/lib/calculator";
 
@@ -103,8 +104,10 @@ export default function Home() {
   
   const [taxType, setTaxType] = useState<TaxType>("general");
   const [incomeTaxRate, setIncomeTaxRate] = useState<number>(0); // 소득세율
+  const [sharedKeyword, setSharedKeyword] = useState<string>("");
+  const [copiedShare, setCopiedShare] = useState<boolean>(false);
 
-  // 로컬스토리지에서 불러오기
+  // 로컬스토리지 및 공유 URL 파라미터(?q=...&price=...)에서 초기값 불러오기
   useEffect(() => {
     const saved = localStorage.getItem("sellerCalcData");
     if (saved) {
@@ -121,9 +124,36 @@ export default function Home() {
         setTaxType(data.taxType ?? "general");
         setIncomeTaxRate(data.incomeTaxRate ?? 0);
       } catch (e) {
-        console.error("Failed to parse saved data", e);
+        console.error("저장된 계산 데이터 파싱 실패:", e);
       }
     }
+
+    // [킬러 엔진 5] 공유된 소싱 견적서 URL 파라미터 파싱 (SSR 정적 생성을 해치지 않도록 클라이언트 마운트 시 처리)
+    if (typeof window !== "undefined" && window.location.search) {
+      const params = new URLSearchParams(window.location.search);
+      const qParam = params.get("q");
+      const marketParam = params.get("market") as Market | null;
+      const priceParam = params.get("price");
+      const costParam = params.get("cost");
+      const scParam = params.get("sc");
+      const srParam = params.get("sr");
+      const packParam = params.get("pack");
+
+      if (qParam) {
+        const cleanQ = qParam.trim().slice(0, 60);
+        setProductName(cleanQ);
+        setSharedKeyword(cleanQ);
+      }
+      if (marketParam && MARKET_PRESETS.some((p) => p.id === marketParam)) {
+        setMarket(marketParam);
+      }
+      if (priceParam !== null && !Number.isNaN(Number(priceParam))) setPrice(Math.max(0, Number(priceParam)));
+      if (costParam !== null && !Number.isNaN(Number(costParam))) setCost(Math.max(0, Number(costParam)));
+      if (scParam !== null && !Number.isNaN(Number(scParam))) setShippingCustomer(Math.max(0, Number(scParam)));
+      if (srParam !== null && !Number.isNaN(Number(srParam))) setShippingReal(Math.max(0, Number(srParam)));
+      if (packParam !== null && !Number.isNaN(Number(packParam))) setPacking(Math.max(0, Number(packParam)));
+    }
+
     setMounted(true);
   }, []);
 
@@ -176,16 +206,69 @@ export default function Home() {
     }
   };
 
-  const handleSelectProduct = (name: string, selectedPrice: number) => {
-    setProductName(name);
-    if (selectedPrice > 0) {
-      setPrice(selectedPrice);
+  const handleApplyBenchmark = useCallback(
+    ({
+      productName: name,
+      price: selectedPrice,
+      recommendedCost,
+      scrollToCalc,
+    }: {
+      productName: string;
+      price: number;
+      recommendedCost?: number;
+      scrollToCalc?: boolean;
+    }) => {
+      setProductName(name);
+      if (selectedPrice > 0) {
+        setPrice(selectedPrice);
+      }
+      if (recommendedCost !== undefined && recommendedCost >= 0) {
+        setCost(recommendedCost);
+      }
+      if (scrollToCalc && typeof document !== "undefined") {
+        document.getElementById("calculator-section")?.scrollIntoView({ behavior: "smooth" });
+      }
+    },
+    []
+  );
+
+  // [킬러 엔진 5] 1초 소싱 견적서 링크 복사 함수
+  const handleCopyShareLink = async () => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams();
+    if (productName.trim()) params.set("q", productName.trim());
+    params.set("market", market);
+    params.set("price", String(price));
+    params.set("cost", String(cost));
+    params.set("sc", String(shippingCustomer));
+    params.set("sr", String(shippingReal));
+    params.set("pack", String(packing));
+
+    const shareUrl = `${window.location.origin}/?${params.toString()}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopiedShare(true);
+      setTimeout(() => setCopiedShare(false), 2500);
+    } catch {
+      window.prompt("아래 마진 분석 링크를 복사해 공유하세요:", shareUrl);
     }
   };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <SearchBar onSelectProduct={handleSelectProduct} />
+      <SearchBar
+        initialKeyword={sharedKeyword}
+        calculatorContext={{
+          shippingCustomer,
+          shippingReal,
+          packing,
+          other,
+          feeRate,
+          taxType,
+          incomeTaxRate,
+        }}
+        onApplyBenchmark={handleApplyBenchmark}
+      />
 
       {/* 셀러 꿀팁 상단 띠배너 */}
       <Link 
@@ -207,12 +290,12 @@ export default function Home() {
 
       {productName && (
         <div className="bg-primary/5 border border-primary/20 text-primary p-3 rounded-lg text-sm font-medium flex items-center justify-between mb-2">
-          <span>선택된 상품: {productName}</span>
+          <span>분석 중인 상품: <strong>{productName}</strong></span>
           <button onClick={() => setProductName("")} className="text-gray-400 hover:text-red-500">✕</button>
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row gap-6">
+      <div id="calculator-section" className="flex flex-col md:flex-row gap-6 scroll-mt-20">
         
         {/* 왼쪽: 입력 폼 */}
         <div className="flex-1 space-y-6">
@@ -361,7 +444,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex gap-4 mb-6">
+            <div className="flex gap-4 mb-4">
               <div className="flex-1 bg-gray-50 p-3 rounded-lg text-center border border-gray-100">
                 <div className="text-xs text-gray-500 mb-1">마진율</div>
                 <div className="font-bold text-xl text-blue-600">{marginRate.toFixed(1)}%</div>
@@ -374,8 +457,29 @@ export default function Home() {
               </div>
             </div>
 
+            {/* [킬러 엔진 5] 동업자·단톡방 1초 소싱 견적서 공유 버튼 */}
+            <button
+              type="button"
+              onClick={handleCopyShareLink}
+              className={`w-full py-2.5 px-4 rounded-xl text-xs font-extrabold border flex items-center justify-center gap-1.5 transition-all ${
+                copiedShare
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-700"
+                  : "bg-gray-50 hover:bg-gray-100 border-gray-200 text-gray-700"
+              }`}
+            >
+              {copiedShare ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" /> 분석 링크 복사 완료! 단톡방에 붙여넣으세요
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-3.5 h-3.5 text-primary" /> 이 마진 분석표 링크 복사 (동업자·단톡방 공유)
+                </>
+              )}
+            </button>
+
             {/* 막대형 비용 시각화 */}
-            <div className="mt-8">
+            <div className="mt-6">
               <div className="text-xs font-semibold text-gray-500 mb-2 flex items-center gap-1">
                 <Info className="w-3 h-3" /> 매출 비중 한눈에 보기
               </div>
@@ -402,6 +506,15 @@ export default function Home() {
         </div>
 
       </div>
+
+      {/* [킬러 엔진 2 & 3] 연간 포장비 손실 시뮬레이터 & 세금 방어용 경비처리 장비 체감가 계산기 */}
+      <ProfitBoostWidgets
+        packing={packing}
+        onChangePacking={setPacking}
+        unitTaxAmount={vat + incomeTax}
+        taxType={taxType}
+        incomeTaxRate={incomeTaxRate}
+      />
 
       {/* 셀러 꿀팁 메인 후킹 CTA 카드 */}
       <div className="mt-8 bg-gradient-to-br from-gray-900 via-gray-900 to-slate-800 rounded-2xl p-6 md:p-8 text-white shadow-md relative overflow-hidden">
