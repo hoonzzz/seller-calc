@@ -29,8 +29,8 @@ export default function TipsPage() {
                 <div className="flex-1 pr-4">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-xs text-gray-400 font-medium">{date}</span>
-                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100">
-                      🤖 AI
+                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-[#03C75A] border border-emerald-100">
+                      실무 가이드
                     </span>
                   </div>
                   <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#03C75A] transition-colors">

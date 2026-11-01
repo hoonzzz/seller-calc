@@ -183,8 +183,6 @@ export default function Home() {
     }
   };
 
-  if (!mounted) return <div className="animate-pulse h-screen bg-gray-100 rounded-xl" />;
-
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <SearchBar onSelectProduct={handleSelectProduct} />
@@ -376,42 +374,6 @@ export default function Home() {
               </div>
             </div>
 
-            <button 
-              onClick={async () => {
-                // 브라우저 팝업 차단 방지를 위해 새 창을 먼저 열어둡니다.
-                const newWindow = window.open('about:blank', '_blank');
-
-                try {
-                  if (productName && productName.trim()) {
-                    const res = await fetch(`/api/coupang?keyword=${encodeURIComponent(productName.trim())}`);
-                    if (res.ok) {
-                      const data = await res.json();
-                      if (data.url && newWindow) {
-                        newWindow.location.href = data.url;
-                        return;
-                      }
-                    }
-                  }
-                } catch (err) {
-                  console.error('쿠팡 파트너스 딥링크 연동 실패:', err);
-                }
-
-                // 키 미등록, 에러 또는 상품명 부재 시 기본 링크로 이동
-                if (newWindow) {
-                  newWindow.location.href = 'https://link.coupang.com/a/gBfL9ZBm7o';
-                }
-              }}
-              className="w-full bg-gradient-to-r from-red-500 to-rose-600 text-white font-bold py-3.5 rounded-xl hover:opacity-90 transition-opacity shadow-md flex items-center justify-center gap-2 animate-pulse-slow cursor-pointer"
-            >
-              <span className="text-xl">🛒</span> {productName ? `'${productName}' 쿠팡 최저가 시세 확인` : '쿠팡에서 현재 시세 확인하기'}
-            </button>
-            
-            <div className="mt-3 text-center">
-              <p className="text-[10px] text-gray-400">
-                &quot;이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.&quot;
-              </p>
-            </div>
-
             {/* 막대형 비용 시각화 */}
             <div className="mt-8">
               <div className="text-xs font-semibold text-gray-500 mb-2 flex items-center gap-1">
@@ -487,6 +449,88 @@ export default function Home() {
               <li><strong>세금 공제 로직 탑재</strong>: 일반과세자, 간이과세자, 면세사업자에 따른 부가가치세(VAT) 차이와 연말 종합소득세 예상치를 미리 차감해 실제 통장에 꽂히는 진짜 마진을 보여줍니다.</li>
               <li><strong>무료 키워드 트렌드 분석</strong>: 상단 검색창에 소싱할 상품명을 입력하면, 최근 30일간의 네이버 검색 트렌드 지수를 보여주어 수요 증감을 파악할 수 있습니다.</li>
             </ul>
+          </section>
+
+          <section>
+            <h3 className="font-bold text-xl text-[#03C75A] mb-3">주요 오픈마켓 수수료율 및 정산 주기 비교표</h3>
+            <p className="mb-3 text-gray-600">플랫폼마다 결제 수수료, 매출 연동 수수료, 정산 주기가 상이하므로 입점 전 아래 기준표를 참고하여 판매가를 설계하시기 바랍니다.</p>
+            <div className="overflow-x-auto border border-gray-200 rounded-xl">
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200 text-gray-800">
+                    <th className="p-3 font-bold">플랫폼</th>
+                    <th className="p-3 font-bold">평균 수수료율 (VAT 별도)</th>
+                    <th className="p-3 font-bold">정산 주기</th>
+                    <th className="p-3 font-bold">핵심 특징</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 text-gray-600">
+                  <tr>
+                    <td className="p-3 font-semibold text-gray-900">네이버 스마트스토어</td>
+                    <td className="p-3">약 3.63% ~ 5.63%</td>
+                    <td className="p-3">구매확정 후 +1영업일 (빠른정산 가능)</td>
+                    <td className="p-3">국내 최저 수준 수수료, 검색 유입 연동 수수료(1.81%) 별도</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-semibold text-gray-900">쿠팡 마켓플레이스(윙)</td>
+                    <td className="p-3">약 5.0% ~ 10.8%</td>
+                    <td className="p-3">주정산 / 월정산 (구매확정 기준)</td>
+                    <td className="p-3">강력한 트래픽과 아이템위너 시스템, 배송비에도 약 3.3% 수수료 부과</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-semibold text-gray-900">쿠팡 로켓그로스</td>
+                    <td className="p-3">판매수수료 + 입출고·배송 요금</td>
+                    <td className="p-3">구매확정일 기준 정산 규정 적용</td>
+                    <td className="p-3">로켓배송 배지 부여, 쿠팡 풀필먼트 센터 입고·보관·CS 일괄 대행</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-semibold text-gray-900">11번가 / G마켓 / 옥션</td>
+                    <td className="p-3">약 8.0% ~ 13.0%</td>
+                    <td className="p-3">구매확정 후 +1~2영업일</td>
+                    <td className="p-3">기획전 및 쿠폰 할인 프로모션 비중이 높음, 카테고리별 수수료 편차 큼</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section className="pt-6 border-t border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-xl text-gray-900">분야별 셀러 실무 심층 가이드</h3>
+              <Link href="/tips" className="text-xs font-bold text-[#03C75A] hover:underline">전체 칼럼 보기 &rarr;</Link>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <Link href="/tips/smartstore-vs-coupang" className="p-4 rounded-xl border border-gray-200 hover:border-[#03C75A] transition-colors bg-gray-50/50">
+                <div className="text-xs font-bold text-[#03C75A] mb-1">수수료 비교</div>
+                <div className="font-bold text-gray-900 text-sm mb-1">스마트스토어 vs 쿠팡 수수료 및 마진율 완벽 비교</div>
+                <div className="text-xs text-gray-500 line-clamp-1">결제 수수료와 연동 수수료, 배송비 수수료까지 반영한 실전 비교</div>
+              </Link>
+              <Link href="/tips/tax-differences" className="p-4 rounded-xl border border-gray-200 hover:border-[#03C75A] transition-colors bg-gray-50/50">
+                <div className="text-xs font-bold text-[#03C75A] mb-1">세무·절세</div>
+                <div className="font-bold text-gray-900 text-sm mb-1">간이과세자 vs 일반과세자 세금 차이와 전환 타이밍</div>
+                <div className="text-xs text-gray-500 line-clamp-1">연 매출 기준과 부가가치세 계산 공식, 매입세액 공제 전략</div>
+              </Link>
+              <Link href="/tips/coupang-rocket-growth-guide" className="p-4 rounded-xl border border-gray-200 hover:border-[#03C75A] transition-colors bg-gray-50/50">
+                <div className="text-xs font-bold text-[#03C75A] mb-1">풀필먼트</div>
+                <div className="font-bold text-gray-900 text-sm mb-1">쿠팡 로켓그로스 입점 수수료 및 물류 보관비 계산 가이드</div>
+                <div className="text-xs text-gray-500 line-clamp-1">크기 구간별 입출고 요금과 장기 보관료 할증 방어 노하우</div>
+              </Link>
+              <Link href="/tips/ad-roas-bep-calculation" className="p-4 rounded-xl border border-gray-200 hover:border-[#03C75A] transition-colors bg-gray-50/50">
+                <div className="text-xs font-bold text-[#03C75A] mb-1">마케팅·ROAS</div>
+                <div className="font-bold text-gray-900 text-sm mb-1">검색광고 ROAS 분석과 손익분기점(BEP) 광고비 계산 공식</div>
+                <div className="text-xs text-gray-500 line-clamp-1">마진율 구간별 최소 목표 ROAS 산출과 광고비 누수 차단법</div>
+              </Link>
+              <Link href="/tips/overseas-purchasing-customs-guide" className="p-4 rounded-xl border border-gray-200 hover:border-[#03C75A] transition-colors bg-gray-50/50">
+                <div className="text-xs font-bold text-[#03C75A] mb-1">글로벌 소싱</div>
+                <div className="font-bold text-gray-900 text-sm mb-1">해외구매대행 관부가세 산출 공식 및 목록통관 실무</div>
+                <div className="text-xs text-gray-500 line-clamp-1">미화 150달러 면세 기준과 배대지 운임, 순액 매출 소명 절차</div>
+              </Link>
+              <Link href="/tips/consignment-vs-wholesale-sourcing" className="p-4 rounded-xl border border-gray-200 hover:border-[#03C75A] transition-colors bg-gray-50/50">
+                <div className="text-xs font-bold text-[#03C75A] mb-1">소싱 전략</div>
+                <div className="font-bold text-gray-900 text-sm mb-1">위탁판매 vs 사입(도매) 소싱 비교 및 창업 로드맵</div>
+                <div className="text-xs text-gray-500 line-clamp-1">초기 자본금 규모에 맞춘 무실패 3단계 하이브리드 사입 전환법</div>
+              </Link>
+            </div>
           </section>
 
           <section className="pt-6 border-t border-gray-100">

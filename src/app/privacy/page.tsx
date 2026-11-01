@@ -35,7 +35,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="font-semibold text-base text-gray-900 mb-2">4. 개인정보 보호 문의</h2>
           <p>서비스 이용 중 개인정보 관련 문의가 있으신 경우 아래 연락처로 문의해 주시기 바랍니다.</p>
-          <p className="mt-1 font-medium text-gray-900">이메일: hello@seller-margin.vercel.app</p>
+          <p className="mt-1 font-medium text-gray-900">이메일: contact.sellermargin@gmail.com</p>
         </section>
         
         <p className="pt-6 text-xs text-gray-500">부칙: 본 방침은 2026년 8월 12일부터 시행됩니다.</p>

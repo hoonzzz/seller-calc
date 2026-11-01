@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://seller-margin.vercel.app/sitemap.xml
