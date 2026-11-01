@@ -187,21 +187,23 @@ export default function ProfitBoostWidgets({
         </div>
       </div>
 
-      {/* 모바일 친화형 2분할 탭 네비게이션 (한 번에 하나의 도구에만 집중) */}
-      <div className="grid grid-cols-2 bg-slate-50/70 border-b border-slate-200/80 p-1.5 gap-1.5">
+      {/* 모바일 친화형 2분할 탭 네비게이션 (시각적 정체성 확실한 탭) */}
+      <div className="grid grid-cols-2 bg-slate-100/80 border-b border-slate-200 p-1.5 gap-1.5">
         <button
           type="button"
           onClick={() => setActiveTab("packing")}
           className={`min-h-[44px] px-3 py-2 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all ${
             activeTab === "packing"
-              ? "bg-white text-slate-900 shadow-xs border border-slate-200/70"
-              : "text-slate-500 hover:text-slate-800"
+              ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
           }`}
         >
-          <PackageCheck className={`w-4 h-4 shrink-0 ${activeTab === "packing" ? "text-primary" : "text-slate-400"}`} />
+          <PackageCheck className={`w-4 h-4 shrink-0 ${activeTab === "packing" ? "text-white" : "text-amber-600"}`} />
           <span>포장 원가 절감</span>
           {annualPackingLoss > 0 && (
-            <span className="hidden xs:inline-block text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700">
+            <span className={`hidden xs:inline-block text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
+              activeTab === "packing" ? "bg-black/20 text-white" : "bg-emerald-100 text-emerald-800"
+            }`}>
               +{formatManWon(annualPackingLoss)}
             </span>
           )}
@@ -212,37 +214,39 @@ export default function ProfitBoostWidgets({
           onClick={() => setActiveTab("tax")}
           className={`min-h-[44px] px-3 py-2 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 transition-all ${
             activeTab === "tax"
-              ? "bg-white text-slate-900 shadow-xs border border-slate-200/70"
-              : "text-slate-500 hover:text-slate-800"
+              ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs"
+              : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
           }`}
         >
-          <ShieldCheck className={`w-4 h-4 shrink-0 ${activeTab === "tax" ? "text-primary" : "text-slate-400"}`} />
+          <ShieldCheck className={`w-4 h-4 shrink-0 ${activeTab === "tax" ? "text-white" : "text-purple-600"}`} />
           <span>장비 경비·절세</span>
-          <span className="hidden xs:inline-block text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-50 text-primary">
+          <span className={`hidden xs:inline-block text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
+            activeTab === "tax" ? "bg-black/20 text-white" : "bg-purple-100 text-purple-800"
+          }`}>
             -{sampleShield.savePercent.toFixed(0)}%
           </span>
         </button>
       </div>
 
       {/* ============================================================
-          탭 1: 포장·부자재 원가 절감 시뮬레이터
+          탭 1: 포장·부자재 원가 절감 시뮬레이터 (오렌지/앰버 & 에메랄드 테마)
          ============================================================ */}
       {activeTab === "packing" ? (
         <div className="p-4 sm:p-6 space-y-5 animate-in fade-in duration-200">
           {/* Before -> After 비교 요약 카드 */}
-          <div className="rounded-xl bg-slate-50 border border-slate-200/80 p-4 space-y-4">
+          <div className="rounded-xl bg-amber-50/40 border border-amber-200/80 p-4 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="bg-white border border-slate-200 rounded-lg px-3 py-2 text-center min-w-[92px]">
-                  <div className="text-[11px] text-slate-500 font-medium">현재 포장비</div>
-                  <div className="text-sm font-bold text-slate-700">
+                <div className="bg-white border border-amber-200 rounded-lg px-3 py-2 text-center min-w-[92px] shadow-2xs">
+                  <div className="text-[11px] text-amber-800 font-semibold">현재 포장비</div>
+                  <div className="text-sm font-extrabold text-slate-800">
                     {basePackingForCompare.toLocaleString()}원
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-slate-400 shrink-0" />
-                <div className="bg-blue-50/80 border border-blue-200 rounded-lg px-3 py-2 text-center min-w-[92px]">
-                  <div className="text-[11px] text-primary font-semibold">대량 묶음 단가</div>
-                  <div className="text-sm font-extrabold text-primary">
+                <ArrowRight className="w-4 h-4 text-amber-500 shrink-0" />
+                <div className="bg-emerald-50 border-2 border-emerald-500 rounded-lg px-3 py-2 text-center min-w-[92px] shadow-2xs">
+                  <div className="text-[11px] text-emerald-800 font-extrabold">대량 묶음 단가</div>
+                  <div className="text-sm font-black text-emerald-700">
                     {BULK_BENCHMARK_PACKING_COST}원
                   </div>
                 </div>
@@ -269,14 +273,14 @@ export default function ProfitBoostWidgets({
             {/* 토스 스타일 iOS 스위치 행 */}
             <div
               onClick={handleToggleBulkSimulator}
-              className="flex items-center justify-between gap-3 pt-3 border-t border-slate-200/80 cursor-pointer select-none"
+              className="flex items-center justify-between gap-3 pt-3 border-t border-amber-200/60 cursor-pointer select-none"
             >
               <div>
-                <div className="text-xs sm:text-sm font-bold text-slate-900">
+                <div className="text-xs sm:text-sm font-extrabold text-slate-900">
                   대량 단가({BULK_BENCHMARK_PACKING_COST}원) 위 계산기에 바로 적용해보기
                 </div>
-                <div className="text-[11px] text-slate-500">
-                  스위치를 켜면 위 정산 결과의 순수익과 마진율 변화를 즉시 확인할 수 있습니다.
+                <div className="text-[11px] text-amber-900/80">
+                  스위치를 켜면 위 정산 결과의 순수익과 마진율 변화를 실시간으로 확인할 수 있습니다.
                 </div>
               </div>
               <button
@@ -288,7 +292,7 @@ export default function ProfitBoostWidgets({
                   handleToggleBulkSimulator();
                 }}
                 className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors ${
-                  isBulkSimOn ? "bg-primary" : "bg-slate-300"
+                  isBulkSimOn ? "bg-emerald-500" : "bg-slate-300"
                 }`}
               >
                 <span
@@ -303,10 +307,11 @@ export default function ProfitBoostWidgets({
           {/* 품목별 대량 부자재 시세 조회 가로 스크롤 알약 버튼 */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-700">
+              <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-amber-500" />
                 품목별 대량 묶음 실시간 시세 조회
               </span>
-              <span className="text-[11px] text-slate-400">품목 선택 시 조회</span>
+              <span className="text-[11px] text-amber-800 font-semibold">품목 선택 시 조회</span>
             </div>
 
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
@@ -319,8 +324,8 @@ export default function ProfitBoostWidgets({
                     onClick={() => loadSupplyCategory(preset)}
                     className={`shrink-0 min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
                       isSelected
-                        ? "bg-slate-900 border-slate-900 text-white shadow-2xs"
-                        : "bg-white border-slate-200 text-slate-700 hover:border-slate-300 active:bg-slate-50"
+                        ? "bg-amber-600 border-amber-600 text-white shadow-xs"
+                        : "bg-white border-amber-200/80 text-amber-950 hover:bg-amber-50 active:bg-amber-100"
                     }`}
                   >
                     {preset.label}
@@ -332,8 +337,8 @@ export default function ProfitBoostWidgets({
             {activeSupplyId && (
               <div className="pt-1 space-y-2.5 animate-in fade-in duration-200">
                 {isLoadingSupply ? (
-                  <div className="py-8 flex items-center justify-center text-xs text-slate-500 gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin text-primary" /> 실시간 부자재 시세를 불러오는 중...
+                  <div className="py-8 flex items-center justify-center text-xs text-amber-800 gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin text-amber-600" /> 실시간 부자재 시세를 불러오는 중...
                   </div>
                 ) : supplyProducts.length > 0 ? (
                   <>
@@ -344,7 +349,7 @@ export default function ProfitBoostWidgets({
                           href={item.productUrl || supplySearchUrl}
                           target="_blank"
                           rel="noopener noreferrer sponsored"
-                          className="flex sm:flex-col justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-primary bg-white transition-all group"
+                          className="flex sm:flex-col justify-between gap-3 p-3 rounded-xl border border-amber-200/90 hover:border-amber-500 bg-white transition-all group shadow-2xs"
                         >
                           <div className="flex sm:flex-col gap-3 min-w-0">
                             {item.productImage && (
@@ -353,7 +358,7 @@ export default function ProfitBoostWidgets({
                                 src={item.productImage}
                                 alt={item.productName}
                                 loading="lazy"
-                                className="w-14 h-14 sm:w-full sm:h-28 rounded-lg object-cover border border-slate-100 shrink-0 bg-slate-50"
+                                className="w-14 h-14 sm:w-full sm:h-28 rounded-lg object-cover border border-amber-100 shrink-0 bg-amber-50/40"
                               />
                             )}
                             <div className="min-w-0">
@@ -362,7 +367,7 @@ export default function ProfitBoostWidgets({
                                   로켓배송
                                 </span>
                               )}
-                              <p className="text-xs font-medium text-slate-800 line-clamp-2 group-hover:text-primary leading-snug">
+                              <p className="text-xs font-medium text-slate-800 line-clamp-2 group-hover:text-amber-700 leading-snug">
                                 {item.productName}
                               </p>
                             </div>
@@ -371,7 +376,7 @@ export default function ProfitBoostWidgets({
                             <span className="text-sm font-extrabold text-slate-900">
                               {item.productPrice.toLocaleString()}원
                             </span>
-                            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-primary" />
+                            <ChevronRight className="w-4 h-4 text-amber-400 group-hover:text-amber-600" />
                           </div>
                         </a>
                       ))}
@@ -386,7 +391,7 @@ export default function ProfitBoostWidgets({
                       href={supplySearchUrl}
                       target="_blank"
                       rel="noopener noreferrer sponsored"
-                      className="min-h-[42px] w-full px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      className="min-h-[42px] w-full px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
                     >
                       대량 부자재 로켓배송 최저가 확인하기 <ExternalLink className="w-3.5 h-3.5" />
                     </a>
@@ -401,21 +406,21 @@ export default function ProfitBoostWidgets({
         </div>
       ) : (
         /* ============================================================
-           탭 2: 사업자 장비 경비처리·절세 체감가 시뮬레이터
+           탭 2: 사업자 장비 경비처리·절세 체감가 시뮬레이터 (퍼플/인디고 테마)
            ============================================================ */
         <div className="p-4 sm:p-6 space-y-5 animate-in fade-in duration-200">
           {/* 절세 계산 슬라이더 & 3분할 요약 영수증 */}
-          <div className="rounded-xl bg-slate-50 border border-slate-200/80 p-4 space-y-4">
+          <div className="rounded-xl bg-purple-50/40 border border-purple-200/80 p-4 space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div className="text-xs font-bold text-slate-700">
+              <div className="text-xs font-extrabold text-purple-950">
                 사업용 장비 구매 예산 선택{" "}
-                <span className="text-slate-400 font-medium">
+                <span className="text-purple-700/80 font-medium">
                   ({taxType === "general" ? "일반과세" : taxType === "simplified" ? "간이과세" : "면세"} · 종소세{" "}
                   {sampleShield.appliedIncomeTaxRate}% 기준)
                 </span>
               </div>
               {annualEstimatedTax > 0 && (
-                <span className="text-[11px] font-semibold text-slate-500">
+                <span className="text-[11px] font-bold text-purple-700 bg-purple-100/70 px-2 py-0.5 rounded-md">
                   연 예상 세액 약 {formatManWon(annualEstimatedTax)}
                 </span>
               )}
@@ -431,8 +436,8 @@ export default function ProfitBoostWidgets({
                     onClick={() => setSampleEquipPrice(val)}
                     className={`min-h-[36px] rounded-lg text-xs font-bold border transition-all ${
                       sampleEquipPrice === val
-                        ? "bg-primary text-white border-primary shadow-2xs"
-                        : "bg-white text-slate-700 border-slate-200 hover:border-slate-300"
+                        ? "bg-purple-600 text-white border-purple-600 shadow-xs"
+                        : "bg-white text-purple-950 border-purple-200 hover:border-purple-300"
                     }`}
                   >
                     {val / 10000}만 원
@@ -447,27 +452,27 @@ export default function ProfitBoostWidgets({
                 value={sampleEquipPrice}
                 onChange={(e) => setSampleEquipPrice(Number(e.target.value))}
                 aria-label="장비 구매 예산 슬라이더"
-                className="w-full accent-primary cursor-pointer h-2 bg-slate-200 rounded-lg"
+                className="w-full accent-purple-600 cursor-pointer h-2 bg-purple-200 rounded-lg"
               />
             </div>
 
             {/* 깔끔한 3칸 절세 영수증 */}
             <div className="grid grid-cols-3 gap-2 pt-1">
-              <div className="bg-white border border-slate-200 rounded-xl p-3">
-                <div className="text-[11px] text-slate-500">카드 결제가</div>
-                <div className="text-xs sm:text-sm font-bold text-slate-700 mt-0.5">
+              <div className="bg-white border border-purple-200 rounded-xl p-3 shadow-2xs">
+                <div className="text-[11px] text-slate-500 font-medium">카드 결제가</div>
+                <div className="text-xs sm:text-sm font-extrabold text-slate-700 mt-0.5">
                   {sampleEquipPrice.toLocaleString()}원
                 </div>
               </div>
-              <div className="bg-white border border-slate-200 rounded-xl p-3">
-                <div className="text-[11px] text-emerald-700 font-semibold">부가세+종소세 절감</div>
-                <div className="text-xs sm:text-sm font-extrabold text-emerald-600 mt-0.5">
+              <div className="bg-white border border-purple-200 rounded-xl p-3 shadow-2xs">
+                <div className="text-[11px] text-emerald-700 font-bold">부가세+종소세 절감</div>
+                <div className="text-xs sm:text-sm font-black text-emerald-600 mt-0.5">
                   -{sampleShield.totalTaxSaved.toLocaleString()}원
                 </div>
               </div>
-              <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-3">
-                <div className="text-[11px] text-primary font-bold">실질 체감가</div>
-                <div className="text-xs sm:text-sm font-black text-primary mt-0.5">
+              <div className="bg-purple-100/70 border-2 border-purple-500 rounded-xl p-3 shadow-2xs">
+                <div className="text-[11px] text-purple-900 font-extrabold">실질 체감가</div>
+                <div className="text-xs sm:text-sm font-black text-purple-700 mt-0.5">
                   {sampleShield.effectivePrice.toLocaleString()}원
                 </div>
               </div>
@@ -477,10 +482,11 @@ export default function ProfitBoostWidgets({
           {/* 실제 업무 장비 시세 + 절세 체감가 자동 대입 */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-700">
+              <span className="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-purple-600" />
                 실제 업무용 장비에 내 절세 체감가 대입해보기
               </span>
-              <span className="text-[11px] text-slate-400">품목 선택 시 조회</span>
+              <span className="text-[11px] text-purple-800 font-semibold">품목 선택 시 조회</span>
             </div>
 
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
@@ -493,8 +499,8 @@ export default function ProfitBoostWidgets({
                     onClick={() => loadEquipCategory(preset)}
                     className={`shrink-0 min-h-[38px] px-3.5 py-2 rounded-xl text-xs font-bold border transition-all ${
                       isSelected
-                        ? "bg-slate-900 border-slate-900 text-white shadow-2xs"
-                        : "bg-white border-slate-200 text-slate-700 hover:border-slate-300 active:bg-slate-50"
+                        ? "bg-purple-600 border-purple-600 text-white shadow-xs"
+                        : "bg-white border-purple-200/80 text-purple-950 hover:border-purple-300 active:bg-purple-50"
                     }`}
                   >
                     {preset.label}
@@ -506,8 +512,8 @@ export default function ProfitBoostWidgets({
             {activeEquipId && (
               <div className="pt-1 space-y-2.5 animate-in fade-in duration-200">
                 {isLoadingEquip ? (
-                  <div className="py-8 flex items-center justify-center text-xs text-slate-500 gap-2">
-                    <Loader2 className="w-4 h-4 animate-spin text-primary" /> 장비 시세 및 절세 체감가 계산 중...
+                  <div className="py-8 flex items-center justify-center text-xs text-purple-800 gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin text-purple-600" /> 장비 시세 및 절세 체감가 계산 중...
                   </div>
                 ) : equipProducts.length > 0 ? (
                   <>
@@ -524,7 +530,7 @@ export default function ProfitBoostWidgets({
                             href={item.productUrl || equipSearchUrl}
                             target="_blank"
                             rel="noopener noreferrer sponsored"
-                            className="flex sm:flex-col justify-between gap-3 p-3 rounded-xl border border-slate-200 hover:border-primary bg-white transition-all group"
+                            className="flex sm:flex-col justify-between gap-3 p-3 rounded-xl border border-purple-200/90 hover:border-purple-500 bg-white transition-all group shadow-2xs"
                           >
                             <div className="flex sm:flex-col gap-3 min-w-0">
                               {item.productImage && (
@@ -533,14 +539,14 @@ export default function ProfitBoostWidgets({
                                   src={item.productImage}
                                   alt={item.productName}
                                   loading="lazy"
-                                  className="w-14 h-14 sm:w-full sm:h-28 rounded-lg object-cover border border-slate-100 shrink-0 bg-slate-50"
+                                  className="w-14 h-14 sm:w-full sm:h-28 rounded-lg object-cover border border-purple-100 shrink-0 bg-purple-50/40"
                                 />
                               )}
                               <div className="min-w-0">
                                 <span className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 mb-1">
                                   -{shield.totalTaxSaved.toLocaleString()}원 절세
                                 </span>
-                                <p className="text-xs font-medium text-slate-800 line-clamp-2 group-hover:text-primary leading-snug">
+                                <p className="text-xs font-medium text-slate-800 line-clamp-2 group-hover:text-purple-700 leading-snug">
                                   {item.productName}
                                 </p>
                               </div>
@@ -550,11 +556,11 @@ export default function ProfitBoostWidgets({
                                 <div className="text-[10px] text-slate-400 line-through">
                                   {item.productPrice.toLocaleString()}원
                                 </div>
-                                <div className="text-sm font-black text-primary">
+                                <div className="text-sm font-black text-purple-700">
                                   체감 {shield.effectivePrice.toLocaleString()}원
                                 </div>
                               </div>
-                              <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-primary mb-0.5" />
+                              <ChevronRight className="w-4 h-4 text-purple-400 group-hover:text-purple-600 mb-0.5" />
                             </div>
                           </a>
                         );
@@ -570,7 +576,7 @@ export default function ProfitBoostWidgets({
                       href={equipSearchUrl}
                       target="_blank"
                       rel="noopener noreferrer sponsored"
-                      className="min-h-[42px] w-full px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                      className="min-h-[42px] w-full px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
                     >
                       사업자 경비처리 추천 장비 최저가 확인 <ExternalLink className="w-3.5 h-3.5" />
                     </a>
