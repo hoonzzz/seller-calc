@@ -86,15 +86,15 @@ export default function SuppliesLiveExplorer() {
   };
 
   return (
-    <section className="bg-white rounded-2xl border-2 border-amber-200 p-5 sm:p-6 shadow-sm space-y-4">
+    <section className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-xs space-y-4">
       <div className="space-y-1">
-        <div className="inline-flex items-center gap-1.5 text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">
+        <div className="inline-flex items-center gap-1.5 text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-blue-50 text-primary">
           <PackageSearch className="w-3.5 h-3.5" /> 실시간 대량 부자재·장비 시세 조회기
         </div>
-        <h2 className="text-lg sm:text-xl font-extrabold text-gray-900">
+        <h2 className="text-lg sm:text-xl font-extrabold text-slate-900">
           품목별 로켓배송 대량 묶음 시세 확인하기
         </h2>
-        <p className="text-xs sm:text-sm text-gray-600">
+        <p className="text-xs sm:text-sm text-slate-600">
           필요한 부자재 카테고리를 선택하면 현재 구매 가능한 대량 묶음 상품과 실시간 가격을 즉시 불러옵니다.
         </p>
       </div>
@@ -105,14 +105,14 @@ export default function SuppliesLiveExplorer() {
             key={cat.id}
             type="button"
             onClick={() => handleSelect(cat)}
-            className={`p-3 rounded-xl border text-left transition-all ${
+            className={`p-3.5 rounded-xl border text-left transition-all ${
               selectedId === cat.id
-                ? "bg-amber-50 border-amber-400 text-amber-950 shadow-xs"
-                : "bg-gray-50/70 border-gray-200 hover:bg-white text-gray-800"
+                ? "bg-slate-900 border-slate-900 text-white shadow-xs"
+                : "bg-slate-50/70 border-slate-200 hover:bg-white text-slate-800"
             }`}
           >
             <div className="text-xs sm:text-sm font-extrabold">{cat.name}</div>
-            <div className="text-[11px] text-gray-500 mt-0.5 line-clamp-1">{cat.desc}</div>
+            <div className={`text-[11px] mt-0.5 line-clamp-1 ${selectedId === cat.id ? "text-slate-300" : "text-slate-500"}`}>{cat.desc}</div>
           </button>
         ))}
       </div>

@@ -239,40 +239,40 @@ export default function SearchBar({
     : 0;
 
   return (
-    <div className="w-full mb-6 space-y-3">
+    <div className="w-full space-y-2.5">
       <form onSubmit={handleSubmit} className="relative z-10 flex gap-2">
         <div className="relative flex-1">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="소싱할 아이템 입력 (트렌드 + 쿠팡 시세·최대 도매원가 1초 역산)"
-            className="w-full pl-10 pr-4 py-3.5 rounded-xl border-2 border-[#03C75A]/30 bg-white shadow-sm focus:outline-none focus:ring-0 focus:border-[#03C75A] text-sm transition-all placeholder:text-gray-400 font-medium"
+            placeholder="소싱 아이템 입력 (트렌드·최대 원가 역산)"
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 bg-white shadow-2xs focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-base sm:text-sm transition-all placeholder:text-slate-400 font-medium"
           />
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-[#03C75A]" />
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+            <Search className="h-4 w-4 text-slate-400" />
           </div>
         </div>
         <button
           type="submit"
           disabled={isSearching}
-          className="shrink-0 px-4 md:px-6 bg-[#03C75A] text-white text-sm font-bold rounded-xl hover:bg-[#03C75A]/90 transition-colors disabled:opacity-50 flex items-center justify-center min-w-[88px] shadow-sm"
+          className="shrink-0 px-4 sm:px-5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-slate-800 active:scale-[0.99] transition-all disabled:opacity-50 flex items-center justify-center min-w-[84px] shadow-xs"
         >
           {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : "소싱 판독"}
         </button>
       </form>
 
-      {/* 빠른 소싱 판독 추천 키워드 칩 */}
-      <div className="flex items-center gap-1.5 flex-wrap text-xs">
-        <span className="font-bold text-gray-500 flex items-center gap-1 mr-1">
-          <Sparkles className="w-3.5 h-3.5 text-amber-500" /> 원클릭 판독 예시:
+      {/* 모바일 한 줄 가로 스크롤 추천 키워드 칩 (줄바꿈으로 인한 세로 공간 낭비 방지) */}
+      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs">
+        <span className="font-bold text-slate-500 flex items-center gap-1 shrink-0 mr-0.5">
+          <Sparkles className="w-3.5 h-3.5 text-primary" /> 인기 검증:
         </span>
         {HOT_KEYWORDS.map((kw) => (
           <button
             key={kw}
             type="button"
             onClick={() => executeSearch(kw)}
-            className="px-2.5 py-1 rounded-full bg-white border border-gray-200 hover:border-[#03C75A] hover:text-[#03C75A] text-gray-600 font-medium transition-colors shadow-2xs"
+            className="shrink-0 px-3 py-1.5 rounded-full bg-white border border-slate-200 hover:border-primary hover:text-primary active:bg-slate-50 text-slate-600 font-medium transition-colors"
           >
             {kw}
           </button>
@@ -454,7 +454,7 @@ export default function SearchBar({
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-1.5 pt-1 border-t border-gray-100">
+                        <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-slate-100">
                           <button
                             type="button"
                             onClick={() =>
@@ -464,17 +464,17 @@ export default function SearchBar({
                                 scrollToCalc: true,
                               })
                             }
-                            className="py-1.5 px-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 text-[11px] font-bold transition-colors text-center"
+                            className="min-h-[38px] px-2 rounded-lg bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-800 text-xs font-bold transition-colors text-center"
                           >
-                            이 가격 계산기 적용
+                            판매가 적용
                           </button>
                           <a
                             href={item.productUrl || coupangSearchUrl}
                             target="_blank"
                             rel="noopener noreferrer sponsored"
-                            className="py-1.5 px-2 rounded-lg bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white border border-rose-200 text-[11px] font-extrabold transition-colors flex items-center justify-center gap-1"
+                            className="min-h-[38px] px-2 rounded-lg bg-primary/10 hover:bg-primary text-primary hover:text-white text-xs font-extrabold transition-colors flex items-center justify-center gap-1"
                           >
-                            미끼옵션·리뷰 확인 <ExternalLink className="w-3 h-3" />
+                            미끼옵션·리뷰 <ExternalLink className="w-3 h-3" />
                           </a>
                         </div>
                       </div>

@@ -100,25 +100,25 @@ export default function TipToolkitWidget({ slug }: { slug: string }) {
   };
 
   return (
-    <div className="mt-8 bg-amber-50/60 border border-amber-200 rounded-2xl p-5 sm:p-6 space-y-4">
+    <div className="mt-8 bg-white border border-slate-200/90 rounded-2xl p-5 sm:p-6 shadow-xs space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">
+          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-primary bg-blue-50 px-2.5 py-0.5 rounded-full">
             <Wrench className="w-3.5 h-3.5" /> 이 칼럼 실전 적용 추천 장비
           </div>
-          <h3 className="text-base sm:text-lg font-extrabold text-gray-900">
+          <h3 className="text-base sm:text-lg font-extrabold text-slate-900">
             {config.title}
           </h3>
-          <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
             {config.reason}
           </p>
         </div>
         <button
           type="button"
           onClick={handleLoadProducts}
-          className="shrink-0 px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-extrabold transition-colors shadow-xs"
+          className="shrink-0 min-h-[40px] px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold transition-colors shadow-2xs"
         >
-          {isOpen ? "시세 접기" : "로켓배송 실무 장비 시세 보기"}
+          {isOpen ? "시세 접기" : "실무 장비 시세 보기"}
         </button>
       </div>
 
